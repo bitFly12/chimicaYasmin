@@ -1,49 +1,1428 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chimica Yasmin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Chimica Interattiva - Corso Completo</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
-            transition: background 0.5s;
-            color: #333;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
-        h1, h2, h3 {
+
+        :root {
+            --primary: #4f46e5;
+            --secondary: #7c3aed;
+            --accent: #ec4899;
+            --success: #06b6d4;
+            --warning: #f97316;
+            --dark: #0f0f23;
+            --light: #f8f9fa;
+            --card: #1a1f3a;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1f3a 25%, #16213e 50%, #0f1f3c 75%, #0f0f23 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* EFFETTO SFONDO ANIMATO */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: shimmerBg 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmerBg {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* HEADER COMPATTO */
+        .header {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.95) 0%, rgba(124, 58, 237, 0.95) 50%, rgba(236, 72, 153, 0.95) 100%);
+            padding: max(10px, env(safe-area-inset-top)) 15px;
             text-align: center;
-            color: #0645AD;
+            color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .content {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 0.8em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* NAVIGAZIONE ORIZZONTALE COMPATTA */
+        .navigation {
+            display: flex;
+            overflow-x: auto;
+            gap: 6px;
+            padding: 10px 8px;
+            background: rgba(26, 31, 58, 0.7);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: var(--header-height, 50px);
+            z-index: 50;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .navigation::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 55px;
+            padding: 8px 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(79, 70, 229, 0.15);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1.5px solid rgba(79, 70, 229, 0.3);
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            position: relative;
         }
-        .interactive {
-            transition: transform 0.3s, box-shadow 0.3s;
+
+        .nav-card-icon {
+            font-size: 1.4em;
+            margin-bottom: 2px;
         }
-        .interactive:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.5);
+
+        .nav-card span {
+            font-size: 0.6em;
+            color: #b0b0c0;
+            text-align: center;
+            line-height: 1;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-card:active {
+            transform: scale(0.95);
+        }
+
+        .nav-card.active {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.3), rgba(124, 58, 237, 0.3));
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .nav-card.active span {
+            color: var(--accent);
+        }
+
+        /* CONTAINER PRINCIPALE */
+        .container {
+            width: 100%;
+            padding: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* AREA CONTENUTO */
+        .content-area {
+            background: linear-gradient(180deg, rgba(15, 15, 35, 0.8) 0%, rgba(26, 31, 58, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 40px 40px 0 0;
+            padding: 25px 16px 120px;
+            min-height: 100vh;
+            animation: slideUpContent 0.6s ease-out;
+        }
+
+        @keyframes slideUpContent {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            display: none;
+            animation: fadeInSection 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInSection {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* TITOLI SEZIONE */
+        .section h2 {
+            color: var(--accent);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .section h3 {
+            color: var(--success);
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .section p {
+            color: #d0d0e0;
+            line-height: 1.7;
+            font-size: 0.95em;
+            margin-bottom: 12px;
+        }
+
+        /* CARD CONTENUTO CON EFFETTI */
+        .content-card {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border: 1.5px solid rgba(79, 70, 229, 0.3);
+            border-left: 4px solid var(--primary);
+            border-radius: 15px;
+            padding: 18px;
+            margin: 15px 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+            animation: floatOrb 6s ease-in-out infinite;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+        }
+
+        .content-card:active {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+        }
+
+        .content-card * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-card strong {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* LISTA */
+        ul {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+
+        ul li {
+            color: #d0d0e0;
+            margin-bottom: 10px;
+            line-height: 1.7;
+            position: relative;
+            padding-left: 8px;
+        }
+
+        ul li::before {
+            content: '▸';
+            position: absolute;
+            left: -12px;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* FORMULA CHIMICA CON EFFETTO GLASSMORPHISM */
+        .formula {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            color: var(--success);
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.2);
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .formula::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: chemicalShimmer 3s infinite;
+        }
+
+        @keyframes chemicalShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* VISUALIZZATORE MOLECOLA INTERATTIVA */
+        .molecule-viewer {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(236, 72, 153, 0.15));
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .molecule-display {
+            font-size: 4em;
+            margin: 15px 0;
+            animation: moleculeFloat 4s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes moleculeFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-10px) scale(1.05); }
+            50% { transform: translateY(-20px) scale(1.1); }
+            75% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .molecule-info {
+            color: var(--success);
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* TABELLA MOBILE */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 15px;
+            background: rgba(79, 70, 229, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 300px;
+        }
+
+        table th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(79, 70, 229, 0.2);
+            color: #d0d0e0;
+            font-size: 0.9em;
+            background: rgba(26, 31, 58, 0.4);
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* PULSANTI */
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success), #00d9ff);
+            color: white;
+        }
+
+        .btn-outline {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        /* INTERACTIVE BOXES */
+        .interactive-box {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(236, 72, 153, 0.1));
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(79, 70, 229, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1), transparent);
+            animation: pulseOrb 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 30px) scale(1.2); }
+        }
+
+        .interactive-box h4 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .interactive-box p {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* INPUT */
+        input, select {
+            padding: 14px 12px;
+            border: 2px solid rgba(79, 70, 229, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 12px;
+            background: rgba(26, 31, 58, 0.5);
+            color: #e0e0e0;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input::placeholder {
+            color: #707090;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(26, 31, 58, 0.7);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        /* QUIZ */
+        .quiz-option {
+            background: rgba(79, 70, 229, 0.15);
+            border: 2px solid rgba(79, 70, 229, 0.3);
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+        }
+
+        .quiz-option:active {
+            transform: translateX(5px);
+        }
+
+        .quiz-option input {
+            margin-right: 12px;
+            width: auto;
+            margin-bottom: 0;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.1));
+            border-color: var(--success);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .quiz-option.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+            border-color: #ef4444;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        /* ACHIEVEMENT */
+        .achievement {
+            background: linear-gradient(135deg, var(--warning) 0%, var(--accent) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+            animation: popInAchievement 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes popInAchievement {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) rotate(-10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .achievement h3 {
+            color: white;
+            margin-bottom: 8px;
+            font-size: 1.3em;
+            margin-top: 0;
+        }
+
+        .achievement p {
+            color: white;
+            margin: 0;
+        }
+
+        /* VISUALIZZATORE ATOMICO */
+        .atomic-viewer {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(236, 72, 153, 0.15));
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .atom-circle {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--success);
+            border-radius: 50%;
+            position: relative;
+            margin: 10px;
+            animation: orbitAtom 4s linear infinite;
+        }
+
+        .atom-center {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.6);
+        }
+
+        .atom-electron {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+        }
+
+        @keyframes orbitAtom {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* PROGRESS TRACKER */
+        .progress-container {
+            margin: 25px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(79, 70, 229, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* FLOATING ACTION BUTTON */
+        .floating-action {
+            position: fixed;
+            bottom: max(20px, calc(20px + env(safe-area-inset-bottom)));
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.6em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 40;
+            -webkit-user-select: none;
+            user-select: none;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating-action:active {
+            transform: scale(0.95) translateY(0);
+        }
+
+        .floating-action.show {
+            display: flex;
+        }
+
+        /* SEZIONE VUOTA */
+        .safe-bottom {
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+        }
+
+        /* RESPONSIVE */
+        @media (min-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .navigation {
+                display: grid;
+                grid-template-columns: repeat(8, 1fr);
+                gap: 8px;
+                padding: 15px;
+                position: relative;
+                overflow: visible;
+            }
+
+            .nav-card {
+                min-width: auto;
+            }
+
+            .content-area {
+                padding: 40px;
+                border-radius: 20px 20px 0 0;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .btn {
+                width: auto;
+                display: inline-block;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .content-area {
+                border-radius: 0;
+                padding: 50px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="content">
-        <h1>Welcome to Chimica Yasmin</h1>
-        <h2>Your go-to platform for chemistry education</h2>
-        <p>Enhance your chemistry knowledge with interactive visual effects and engaging content designed for mobile experience.</p>
-        <h3>Interactive Chemical Experiments</h3>
-        <p>Explore chemical reactions and transformations in an interactive way! Click <span class="interactive">here</span> to start your journey.</p>
-        <h3>Learn About Color Gradients</h3>
-        <p>Understand the importance of color in chemistry with our educational content.</p>
+    <!-- HEADER COMPATTO -->
+    <div class="header">
+        <h1>⚗️ CHIMICA INTERATTIVA</h1>
+        <p>Impara in modo visuale e divertente</p>
     </div>
+
+    <!-- NAVIGAZIONE COMPATTA -->
+    <div class="navigation" id="navigation">
+        <div class="nav-card active" onclick="showSection('intro')">
+            <div class="nav-card-icon">📚</div>
+            <span>Intro</span>
+        </div>
+        <div class="nav-card" onclick="showSection('atomi')">
+            <div class="nav-card-icon">⚛️</div>
+            <span>Atomi</span>
+        </div>
+        <div class="nav-card" onclick="showSection('molecole')">
+            <div class="nav-card-icon">🧬</div>
+            <span>Molecole</span>
+        </div>
+        <div class="nav-card" onclick="showSection('elementi')">
+            <div class="nav-card-icon">🔬</div>
+            <span>Elementi</span>
+        </div>
+        <div class="nav-card" onclick="showSection('reazioni')">
+            <div class="nav-card-icon">⚡</div>
+            <span>Reazioni</span>
+        </div>
+        <div class="nav-card" onclick="showSection('tipi')">
+            <div class="nav-card-icon">🔥</div>
+            <span>Tipi</span>
+        </div>
+        <div class="nav-card" onclick="showSection('stechio')">
+            <div class="nav-card-icon">⚖️</div>
+            <span>Stechio</span>
+        </div>
+        <div class="nav-card" onclick="showSection('esercizi')">
+            <div class="nav-card-icon">🎮</div>
+            <span>Esercizi</span>
+        </div>
+    </div>
+
+    <!-- CONTAINER PRINCIPALE -->
+    <div class="container">
+        <div class="content-area safe-bottom">
+
+            <!-- SEZIONE: INTRODUZIONE -->
+            <div id="intro" class="section active">
+                <h2>Introduzione alla Chimica</h2>
+                <p>La chimica è la scienza che studia come la materia si trasforma e interagisce. È ovunque intorno a te!</p>
+
+                <div class="molecule-viewer">
+                    <div class="molecule-display">🌍</div>
+                    <div class="molecule-info">La chimica crea il nostro mondo</div>
+                </div>
+
+                <h3>Perché è Importante</h3>
+                <div class="content-card">
+                    <strong>💊 Medicina:</strong> I farmaci curano malattie attraverso reazioni chimiche
+                </div>
+                <div class="content-card">
+                    <strong>⚡ Energia:</strong> Batterie e combustibili producono energia chimicamente
+                </div>
+                <div class="content-card">
+                    <strong>🌱 Natura:</strong> Le piante producono ossigeno attraverso la fotosintesi
+                </div>
+                <div class="content-card">
+                    <strong>🍔 Cibo:</strong> La cucina è una serie di reazioni chimiche
+                </div>
+
+                <h3>Cosa Imparerai</h3>
+                <ul>
+                    <li>Atomi: i mattoni della materia</li>
+                    <li>Molecole: come gli atomi si uniscono</li>
+                    <li>Reazioni: come le sostanze si trasformano</li>
+                    <li>Calcoli: come prevedere i risultati</li>
+                    <li>Applicazioni: come la chimica cambia il mondo</li>
+                </ul>
+
+                <button class="btn btn-primary" onclick="showSection('atomi')">Scopri gli Atomi →</button>
+            </div>
+
+            <!-- SEZIONE: ATOMI -->
+            <div id="atomi" class="section">
+                <h2>Gli Atomi</h2>
+                <p>Gli atomi sono le particelle più piccole della materia. Tutto quello che vedi è fatto di atomi!</p>
+
+                <div class="atomic-viewer">
+                    <div class="atom-circle" style="animation-duration: 2s;">
+                        <div class="atom-center"></div>
+                        <div class="atom-electron" style="left: 60%; top: 20%;"></div>
+                        <div class="atom-electron" style="left: 80%; top: 50%;"></div>
+                        <div class="atom-electron" style="left: 60%; top: 80%;"></div>
+                    </div>
+                </div>
+
+                <h3>Struttura dell'Atomo</h3>
+                <div class="content-card">
+                    <strong>🎯 Nucleo:</strong> Centro dell'atomo, contiene protoni (positivi) e neutroni (neutri)
+                </div>
+                <div class="content-card">
+                    <strong>🌀 Corteccia:</strong> Zona attorno al nucleo con elettroni (negativi) che orbitano
+                </div>
+
+                <h3>Caratteristiche Fondamentali</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Particella</th>
+                            <th>Carica</th>
+                            <th>Posizione</th>
+                        </tr>
+                        <tr>
+                            <td>Protone</td>
+                            <td>Positiva (+)</td>
+                            <td>Nucleo</td>
+                        </tr>
+                        <tr>
+                            <td>Neutrone</td>
+                            <td>Neutra</td>
+                            <td>Nucleo</td>
+                        </tr>
+                        <tr>
+                            <td>Elettrone</td>
+                            <td>Negativa (-)</td>
+                            <td>Corteccia</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="interactive-box">
+                    <h4>💡 Curiosità Atomica</h4>
+                    <p>Un atomo è principalmente vuoto! Se il nucleo fosse grande quanto un pallone da calcio, l'atomo sarebbe grande quanto uno stadio intero!</p>
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('intro')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('molecole')">Continua alle Molecole →</button>
+            </div>
+
+            <!-- SEZIONE: MOLECOLE -->
+            <div id="molecole" class="section">
+                <h2>Le Molecole</h2>
+                <p>Una molecola è formata da 2 o più atomi legati insieme. Sono molto più stabili dei singoli atomi!</p>
+
+                <div class="molecule-viewer">
+                    <div class="molecule-display">💧</div>
+                    <div class="molecule-info">H₂O - Molecola di Acqua</div>
+                </div>
+
+                <h3>Esempi di Molecole Comuni</h3>
+
+                <div class="content-card">
+                    <strong>Acqua (H₂O):</strong> 2 atomi di Idrogeno + 1 di Ossigeno. Essenziale per la vita!
+                    <div class="formula">H₂O = 2H + 1O</div>
+                </div>
+
+                <div class="content-card">
+                    <strong>Ossigeno (O₂):</strong> 2 atomi di Ossigeno legati insieme. Respiriamo questo!
+                    <div class="formula">O₂ = 2O</div>
+                </div>
+
+                <div class="content-card">
+                    <strong>Anidride Carbonica (CO₂):</strong> 1 Carbonio + 2 Ossigeni. Produciamo questo quando respiriamo!
+                    <div class="formula">CO₂ = 1C + 2O</div>
+                </div>
+
+                <div class="content-card">
+                    <strong>Metano (CH₄):</strong> 1 Carbonio + 4 Idrogeni. È il gas naturale!
+                    <div class="formula">CH₄ = 1C + 4H</div>
+                </div>
+
+                <h3>Come si Formano i Legami</h3>
+                <div class="interactive-box">
+                    <h4>🔗 Il Legame Chimico</h4>
+                    <p>Gli atomi si uniscono perché vogliono raggiungere una configurazione stabile. È come se gli atomi fossero magnetici e si attraessero l'un l'altro!</p>
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('atomi')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('elementi')">Continua agli Elementi →</button>
+            </div>
+
+            <!-- SEZIONE: ELEMENTI -->
+            <div id="elementi" class="section">
+                <h2>Gli Elementi Chimici</h2>
+                <p>Un elemento è una sostanza pura composta da un solo tipo di atomo.</p>
+
+                <h3>Tavola Periodica Essenziale</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Simbolo</th>
+                            <th>Nome</th>
+                            <th>Utilizzo</th>
+                        </tr>
+                        <tr>
+                            <td><strong>H</strong></td>
+                            <td>Idrogeno</td>
+                            <td>Acqua, Combustibile</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C</strong></td>
+                            <td>Carbonio</td>
+                            <td>Diamanti, Petrolio</td>
+                        </tr>
+                        <tr>
+                            <td><strong>N</strong></td>
+                            <td>Azoto</td>
+                            <td>Aria, Fertilizzanti</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O</strong></td>
+                            <td>Ossigeno</td>
+                            <td>Respirazione, Fuoco</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Na</strong></td>
+                            <td>Sodio</td>
+                            <td>Sale da cucina</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cl</strong></td>
+                            <td>Cloro</td>
+                            <td>Disinfettante</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fe</strong></td>
+                            <td>Ferro</td>
+                            <td>Acciaio, Sangue</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ca</strong></td>
+                            <td>Calcio</td>
+                            <td>Ossa, Denti</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Proprietà Periodiche</h3>
+                <div class="content-card">
+                    <strong>Reattività:</strong> Alcuni elementi sono molto reattivi (metalli), altri praticamente inerti (gas nobili)
+                </div>
+                <div class="content-card">
+                    <strong>Stato Fisico:</strong> Alcuni elementi sono solidi, altri gas, alcuni liquidi a temperatura ambiente
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('molecole')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('reazioni')">Scopri le Reazioni →</button>
+            </div>
+
+            <!-- SEZIONE: REAZIONI -->
+            <div id="reazioni" class="section">
+                <h2>Le Reazioni Chimiche</h2>
+                <p>Una reazione chimica è quando sostanze (reagenti) si trasformano in nuove sostanze (prodotti).</p>
+
+                <h3>Segni Visibili di una Reazione</h3>
+                <div class="content-card">
+                    <strong>🎨 Cambio di Colore:</strong> La soluzione cambia colore
+                </div>
+                <div class="content-card">
+                    <strong>🌡️ Cambio di Temperatura:</strong> Diventa più calda o più fredda
+                </div>
+                <div class="content-card">
+                    <strong>💨 Produzione di Gas:</strong> Si vedono bolle che salgono
+                </div>
+                <div class="content-card">
+                    <strong>💎 Precipitato:</strong> Si forma una polvere solida
+                </div>
+                <div class="content-card">
+                    <strong>💡 Effetti Luminosi:</strong> Emissione di luce o bagliori
+                </div>
+
+                <h3>Come si Scrive una Reazione</h3>
+                <div class="formula">REAGENTI → PRODOTTI</div>
+
+                <div class="content-card">
+                    <strong>Esempio Pratico:</strong>
+                    <div class="formula">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+                    <p>Metano + Ossigeno = Anidride Carbonica + Acqua (Combustione!)</p>
+                </div>
+
+                <h3>Tipi Energetici</h3>
+                <div class="content-card">
+                    <strong>🔥 Esotermica:</strong> Rilascia energia (calore, luce)
+                </div>
+                <div class="content-card">
+                    <strong>❄️ Endotermica:</strong> Assorbe energia dall'ambiente
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('elementi')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('tipi')">Scopri i Tipi →</button>
+            </div>
+
+            <!-- SEZIONE: TIPI DI REAZIONI -->
+            <div id="tipi" class="section">
+                <h2>I 5 Tipi di Reazioni</h2>
+
+                <h3>1️⃣ Sintesi (Combinazione)</h3>
+                <div class="formula">A + B → AB</div>
+                <div class="content-card">
+                    <strong>Spiegazione:</strong> Due elementi o composti si uniscono per formarne uno nuovo
+                    <div class="formula" style="margin-top: 10px;">2H₂ + O₂ → 2H₂O</div>
+                    <p style="margin-top: 10px;">Idrogeno + Ossigeno = Acqua</p>
+                </div>
+
+                <h3>2️⃣ Decomposizione</h3>
+                <div class="formula">AB → A + B</div>
+                <div class="content-card">
+                    <strong>Spiegazione:</strong> Un composto si divide in elementi o composti più semplici
+                    <div class="formula" style="margin-top: 10px;">2H₂O → 2H₂ + O₂</div>
+                    <p style="margin-top: 10px;">L'acqua si scinde in Idrogeno e Ossigeno (con corrente elettrica)</p>
+                </div>
+
+                <h3>3️⃣ Sostituzione Singola</h3>
+                <div class="formula">A + BC → AC + B</div>
+                <div class="content-card">
+                    <strong>Spiegazione:</strong> Un elemento sostituisce un altro in un composto
+                    <div class="formula" style="margin-top: 10px;">Fe + CuSO₄ → FeSO₄ + Cu</div>
+                    <p style="margin-top: 10px;">Ferro prende il posto del Rame (è più reattivo)</p>
+                </div>
+
+                <h3>4️⃣ Doppia Sostituzione</h3>
+                <div class="formula">AB + CD → AD + CB</div>
+                <div class="content-card">
+                    <strong>Spiegazione:</strong> Due composti scambiano i loro ioni
+                    <div class="formula" style="margin-top: 10px;">HCl + NaOH → NaCl + H₂O</div>
+                    <p style="margin-top: 10px;">Acido + Base = Sale + Acqua (Neutralizzazione)</p>
+                </div>
+
+                <h3>5️⃣ Combustione</h3>
+                <div class="formula">Combustibile + O₂ → CO₂ + H₂O + Energia</div>
+                <div class="content-card">
+                    <strong>Spiegazione:</strong> Una sostanza brucia in ossigeno rilasciando energia
+                    <div class="formula" style="margin-top: 10px;">C + O₂ → CO₂</div>
+                    <p style="margin-top: 10px;">Carbonio brucia e produce Anidride Carbonica</p>
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('reazioni')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('stechio')">Scopri la Stechiometria →</button>
+            </div>
+
+            <!-- SEZIONE: STECHIOMETRIA -->
+            <div id="stechio" class="section">
+                <h2>La Stechiometria</h2>
+                <p>La stechiometria studia le proporzioni (le quantità) tra reagenti e prodotti in una reazione.</p>
+
+                <h3>La Legge di Conservazione della Massa</h3>
+                <div class="interactive-box">
+                    <h4>⚖️ Principio Fondamentale</h4>
+                    <p>"La massa dei reagenti è sempre uguale alla massa dei prodotti". La materia non viene creata né distrutta, solo trasformata!</p>
+                </div>
+
+                <h3>Bilanciamento delle Equazioni</h3>
+                <p>Un'equazione è bilanciata quando il numero di atomi di ogni elemento è uguale su entrambi i lati.</p>
+
+                <div class="content-card">
+                    <strong>Equazione NON bilanciata:</strong>
+                    <div class="formula">H₂ + O₂ → H₂O</div>
+                </div>
+
+                <div class="content-card">
+                    <strong>Equazione BILANCIATA:</strong>
+                    <div class="formula">2H₂ + O₂ → 2H₂O</div>
+                    <p style="margin-top: 10px;">Ora abbiamo 4 H su entrambi i lati e 2 O su entrambi!</p>
+                </div>
+
+                <h3>Passaggi per Bilanciare</h3>
+                <ul>
+                    <li>Scrivi l'equazione non bilanciata</li>
+                    <li>Conta gli atomi di ogni elemento</li>
+                    <li>Aggiungi coefficienti (numeri davanti)</li>
+                    <li>Verifica che sia bilanciata</li>
+                </ul>
+
+                <h3>Mole e Massa Molare</h3>
+                <div class="content-card">
+                    <strong>Mole:</strong> Unità che contiene 6,022 × 10²³ particelle. È come una "dozzina" per gli atomi!
+                </div>
+                <div class="content-card">
+                    <strong>Massa Molare:</strong> Peso di una mole di una sostanza, misurato in g/mol
+                </div>
+
+                <h3>Calcolo Pratico</h3>
+                <div class="interactive-box">
+                    <h4>🧮 Esempio di Calcolo</h4>
+                    <p><strong>Domanda:</strong> Se bruci 32g di metano (CH₄), quanti grammi di CO₂ si producono?</p>
+                    <p style="margin-top: 10px;">
+                        <strong>Dati:</strong> Massa molare CH₄ = 16 g/mol, CO₂ = 44 g/mol<br>
+                        <strong>Equazione:</strong> CH₄ + 2O₂ → CO₂ + 2H₂O
+                    </p>
+                </div>
+
+                <div class="content-card">
+                    <strong>Soluzione:</strong>
+                    <ol style="margin-left: 15px; margin-top: 10px;">
+                        <li>Moli di CH₄: 32 g ÷ 16 g/mol = 2 moli</li>
+                        <li>Dal rapporto 1:1: 2 moli CH₄ producono 2 moli CO₂</li>
+                        <li>Grammi di CO₂: 2 mol × 44 g/mol = <strong style="color: var(--success);">88 grammi</strong></li>
+                    </ol>
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('tipi')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('esercizi')">Fai gli Esercizi →</button>
+            </div>
+
+            <!-- SEZIONE: ESERCIZI -->
+            <div id="esercizi" class="section">
+                <h2>Esercizi Interattivi</h2>
+                <p>Mettiti alla prova con questi esercizi educativi!</p>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Progresso: 0/10</div>
+                </div>
+
+                <h3>Esercizio 1: Conteggio Atomi</h3>
+                <div class="interactive-box">
+                    <h4>❓ Domanda</h4>
+                    <p>Quanti atomi totali sono presenti in una molecola di glucosio C₆H₁₂O₆?</p>
+                </div>
+
+                <div class="quiz-option" onclick="checkQuiz(1, 24, true, this)">
+                    <input type="radio" name="ex1">
+                    <label><strong>24 atomi</strong> (6+12+6=24)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(1, 12, false, this)">
+                    <input type="radio" name="ex1">
+                    <label>12 atomi</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(1, 30, false, this)">
+                    <input type="radio" name="ex1">
+                    <label>30 atomi</label>
+                </div>
+                <div id="result1" style="margin-top: 12px;"></div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 1px solid rgba(79, 70, 229, 0.3);">
+
+                <h3>Esercizio 2: Equilibramento Equazioni</h3>
+                <div class="interactive-box">
+                    <h4>⚖️ Domanda</h4>
+                    <p>Quale è l'equazione bilanciata corretta per la formazione dell'acqua?</p>
+                </div>
+
+                <div class="quiz-option" onclick="checkQuiz(2, 1, false, this)">
+                    <input type="radio" name="ex2">
+                    <label>H₂ + O₂ → H₂O (non bilanciata)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(2, 2, true, this)">
+                    <input type="radio" name="ex2">
+                    <label><strong>2H₂ + O₂ → 2H₂O</strong> (bilanciata)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(2, 3, false, this)">
+                    <input type="radio" name="ex2">
+                    <label>H₂ + 2O₂ → 2H₂O</label>
+                </div>
+                <div id="result2" style="margin-top: 12px;"></div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 1px solid rgba(79, 70, 229, 0.3);">
+
+                <h3>Esercizio 3: Classificazione Reazioni</h3>
+                <div class="interactive-box">
+                    <h4>🔍 Domanda</h4>
+                    <p>Che tipo di reazione è: 2H₂O → 2H₂ + O₂?</p>
+                </div>
+
+                <div class="quiz-option" onclick="checkQuiz(3, 1, true, this)">
+                    <input type="radio" name="ex3">
+                    <label><strong>Decomposizione</strong> (una sostanza si divide)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(3, 2, false, this)">
+                    <input type="radio" name="ex3">
+                    <label>Sintesi (due sostanze si uniscono)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(3, 3, false, this)">
+                    <input type="radio" name="ex3">
+                    <label>Combustione (bruciamento)</label>
+                </div>
+                <div id="result3" style="margin-top: 12px;"></div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 1px solid rgba(79, 70, 229, 0.3);">
+
+                <h3>Esercizio 4: Conteggio Atomi di Ferro</h3>
+                <div class="interactive-box">
+                    <h4>❓ Domanda</h4>
+                    <p>Quanti atomi di Ferro (Fe) ci sono in 4Fe₂O₃?</p>
+                </div>
+
+                <div class="quiz-option" onclick="checkQuiz(4, 8, true, this)">
+                    <input type="radio" name="ex4">
+                    <label><strong>8 atomi Fe</strong> (4×2=8)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(4, 4, false, this)">
+                    <input type="radio" name="ex4">
+                    <label>4 atomi Fe</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(4, 12, false, this)">
+                    <input type="radio" name="ex4">
+                    <label>12 atomi Fe</label>
+                </div>
+                <div id="result4" style="margin-top: 12px;"></div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 1px solid rgba(79, 70, 229, 0.3);">
+
+                <h3>Esercizio 5: Identificare Elementi</h3>
+                <div class="interactive-box">
+                    <h4>🧪 Domanda</h4>
+                    <p>Quale tra questi simboli non rappresenta un elemento chimico?</p>
+                </div>
+
+                <div class="quiz-option" onclick="checkQuiz(5, 1, false, this)">
+                    <input type="radio" name="ex5">
+                    <label>Na (Sodio)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(5, 2, false, this)">
+                    <input type="radio" name="ex5">
+                    <label>Cl (Cloro)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(5, 3, true, this)">
+                    <input type="radio" name="ex5">
+                    <label><strong>Ch</strong> (non esiste)</label>
+                </div>
+                <div id="result5" style="margin-top: 12px;"></div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 1px solid rgba(79, 70, 229, 0.3);">
+
+                <h3>Esercizio 6: Reazione Bilanciata di Combustione</h3>
+                <div class="interactive-box">
+                    <h4>🔥 Domanda</h4>
+                    <p>Quale è l'equazione BILANCIATA per la combustione del Carbonio?</p>
+                </div>
+
+                <div class="quiz-option" onclick="checkQuiz(6, 1, false, this)">
+                    <input type="radio" name="ex6">
+                    <label>C + O₂ → 2CO₂</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(6, 2, true, this)">
+                    <input type="radio" name="ex6">
+                    <label><strong>C + O₂ → CO₂</strong> (bilanciata)</label>
+                </div>
+                <div class="quiz-option" onclick="checkQuiz(6, 3, false, this)">
+                    <input type="radio" name="ex6">
+                    <label>2C + O₂ → CO₂</label>
+                </div>
+                <div id="result6" style="margin-top: 12px;"></div>
+
+                <button class="btn btn-outline" onclick="showSection('stechio')" style="margin-top: 25px;">← Torna a Stechiometria</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FLOATING ACTION BUTTON -->
+    <button class="floating-action" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        let totalScore = 0;
+        let completedExercises = 0;
+
+        function showSection(sectionId) {
+            // Nascondi tutte le sezioni
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-card').forEach(c => c.classList.remove('active'));
+
+            // Mostra sezione selezionata
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`.nav-card[onclick*="${sectionId}"]`).classList.add('active');
+
+            // Scroll top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollTop').classList.remove('show');
+        }
+
+        function checkQuiz(exerciseNum, answer, isCorrect, element) {
+            const resultDiv = document.getElementById(`result${exerciseNum}`);
+            
+            if (isCorrect) {
+                resultDiv.innerHTML = `
+                    <div class="achievement">
+                        <h3>✓ Risposta Corretta!</h3>
+                        <p>Ottimo lavoro! Hai dimostrato di aver compreso bene il concetto.</p>
+                    </div>
+                `;
+                totalScore += 10;
+                completedExercises++;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1)); border-radius: 12px; border: 2px solid #ef4444; border-left: 4px solid #ef4444;">
+                        <p style="margin: 0; color: #fca5a5; font-weight: 700;">✗ Risposta Errata</p>
+                        <p style="margin: 8px 0 0 0; color: #e0e0e0; font-size: 0.9em;">Riprova con maggiore attenzione!</p>
+                    </div>
+                `;
+            }
+
+            completedExercises++;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = Math.min((completedExercises / 6) * 100, 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Progresso: ${completedExercises}/6 - Score: ${totalScore}`;
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mostra FAB quando scrolla
+        window.addEventListener('scroll', () => {
+            const fab = document.getElementById('scrollTop');
+            if (window.scrollY > 300) {
+                fab.classList.add('show');
+            } else {
+                fab.classList.remove('show');
+            }
+        });
+
+        // Previeni zoom doppio tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 </html>
