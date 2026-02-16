@@ -1,0 +1,484 @@
+/* ==================== EFFETTI CHIMICI CSS AVANZATI ==================== */
+
+/* Animazioni di Reazione */
+@keyframes atomicBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-20px) scale(1.1);
+    }
+}
+
+@keyframes electronOrbit {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moleculeFloat {
+    0%, 100% {
+        transform: translateY(0) rotateZ(0deg);
+    }
+    33% {
+        transform: translateY(-15px) rotateZ(5deg);
+    }
+    66% {
+        transform: translateY(-10px) rotateZ(-5deg);
+    }
+}
+
+@keyframes chemicalBubble {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+@keyframes reactingParticles {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(240, 147, 251, 1);
+        box-shadow: 0 0 30px rgba(240, 147, 251, 0.6);
+    }
+}
+
+@keyframes shockWave {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+@keyframes chemicalReaction {
+    0% {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        transform: scale(1);
+    }
+    50% {
+        background: linear-gradient(45deg, #f093fb, #667eea);
+        transform: scale(1.05);
+    }
+    100% {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        transform: scale(1);
+    }
+}
+
+/* Classi di Effetti */
+
+.chemical-particle {
+    animation: atomicBounce 1s ease-in-out infinite;
+}
+
+.molecule-animated {
+    animation: moleculeFloat 3s ease-in-out infinite;
+}
+
+.element-glowing {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.reacting {
+    animation: chemicalReaction 0.6s ease-in-out;
+}
+
+.particle-burst {
+    position: relative;
+}
+
+.particle-burst::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(240, 147, 251, 0.8), transparent);
+    border-radius: 50%;
+    animation: chemicalBubble 0.8s ease-out forwards;
+}
+
+/* Effetti Beaker */
+
+.beaker-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.beaker-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(102, 126, 234, 0.1) 50%, 
+        rgba(240, 147, 251, 0.2) 100%);
+    animation: reactingParticles 1.5s ease-out infinite;
+    pointer-events: none;
+}
+
+/* Effetti Tavola Periodica */
+
+.periodic-element {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.periodic-element:hover {
+    transform: scale(1.15) rotateY(10deg);
+    filter: brightness(1.3) drop-shadow(0 0 15px currentColor);
+}
+
+.periodic-element::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.periodic-element:hover::before {
+    opacity: 1;
+}
+
+.periodic-element::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, var(--color), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    animation: shockWave 0.6s ease-out;
+}
+
+.periodic-element:active::after {
+    opacity: 1;
+}
+
+/* Effetti Reazione */
+
+.reaction-container {
+    position: relative;
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.05), 
+        rgba(240, 147, 251, 0.05));
+    border-radius: 15px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.reaction-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(102, 126, 234, 0.1) 10px,
+        rgba(102, 126, 234, 0.1) 20px
+    );
+    animation: electronOrbit 20s linear infinite;
+}
+
+.reaction-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Effetti Button */
+
+.btn-reactive {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-reactive::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-reactive:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Effetti Card */
+
+.card-reactive {
+    position: relative;
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    overflow: hidden;
+}
+
+.card-reactive::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(240, 147, 251, 0.2), 
+        transparent);
+    transition: left 0.5s;
+}
+
+.card-reactive:hover::before {
+    left: 100%;
+}
+
+/* Effetti Formula Chimica */
+
+.formula-animate {
+    position: relative;
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(90deg, #1a1a2e, #0f0f1e, #1a1a2e);
+    background-size: 200% auto;
+    animation: reactingGlow 3s ease-in-out infinite;
+}
+
+@keyframes reactingGlow {
+    0% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
+}
+
+/* Effetti Molecola 3D */
+
+.molecule-3d {
+    perspective: 1000px;
+    animation: moleculeFloat 4s ease-in-out infinite;
+}
+
+.molecule-3d-inner {
+    transform-style: preserve-3d;
+    animation: electronOrbit 3s linear infinite;
+}
+
+/* Effetti Esplosione */
+
+.explosion-effect {
+    position: fixed;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+}
+
+/* Effetti Highlight */
+
+.highlight-reactive {
+    position: relative;
+    background: linear-gradient(120deg, 
+        rgba(240, 147, 251, 0.3), 
+        rgba(102, 126, 234, 0.3));
+    animation: chemicalReaction 2s ease-in-out infinite;
+}
+
+/* Effetti Text */
+
+.text-glow {
+    color: #667eea;
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.text-reactive {
+    background: linear-gradient(45deg, #667eea, #f093fb, #00d4aa);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: reactingGlow 3s ease infinite;
+}
+
+/* Effetti Slider */
+
+.slider-reactive {
+    position: relative;
+    height: 8px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.slider-reactive::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30%;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    animation: electronOrbit 2s linear infinite;
+}
+
+/* Effetti Progress Bar */
+
+.progress-reactive {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e0e0e0;
+}
+
+.progress-reactive::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #667eea, 
+        #f093fb, 
+        #00d4aa, 
+        #667eea);
+    background-size: 200% 100%;
+    animation: reactingGlow 2s ease-in-out infinite;
+}
+
+/* Effetti Hover Universali */
+
+.interactive-hover {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.interactive-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+}
+
+.interactive-hover:active {
+    transform: scale(0.98);
+}
+
+/* Effetti Scienza */
+
+.science-effect {
+    position: relative;
+}
+
+.science-effect::before,
+.science-effect::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    animation: shockWave 0.8s ease-out infinite;
+}
+
+.science-effect::before {
+    width: 10px;
+    height: 10px;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(102, 126, 234, 0.5);
+}
+
+.science-effect::after {
+    width: 30px;
+    height: 30px;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(240, 147, 251, 0.3);
+    animation-delay: 0.2s;
+}
+
+/* Media Queries */
+
+@media (max-width: 768px) {
+    .reaction-container {
+        padding: 15px;
+    }
+
+    @keyframes atomicBounce {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+        50% {
+            transform: translateY(-10px) scale(1.05);
+        }
+    }
+
+    .periodic-element:hover {
+        transform: scale(1.1);
+    }
+}
+
+/* Compatibilità */
+
+@supports (backdrop-filter: blur(10px)) {
+    .reaction-container {
+        backdrop-filter: blur(10px);
+    }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+    .formula-animate {
+        background: linear-gradient(90deg, #2a2a3e, #1f1f2e, #2a2a3e);
+    }
+
+    .reaction-container {
+        background: linear-gradient(135deg, 
+            rgba(102, 126, 234, 0.1), 
+            rgba(240, 147, 251, 0.1));
+    }
+}
