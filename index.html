@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧪 Il Grande Viaggio della Chimica - Lezione Interattiva</title>
+    <title>Chimica Interattiva - Corso Completo</title>
     <style>
         * {
             margin: 0;
@@ -12,458 +12,42 @@
         }
 
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --success: #00d4aa;
-            --warning: #ffa502;
-            --danger: #ff6b6b;
-            --dark: #1a1a2e;
-            --light: #f5f5f5;
-            --text: #2d3436;
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
         }
 
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #1e293b;
+            overflow-x: hidden;
         }
 
-        /* SCHERMATA DI CARICAMENTO */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            animation: fadeOut 0.5s ease-out 2s forwards;
-        }
-
-        .loading-screen h1 {
-            color: white;
-            font-size: 3em;
-            margin-bottom: 30px;
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        .loading-spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(255,255,255,0.3);
-            border-top: 8px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; pointer-events: none; }
-        }
-
-        .loading-text {
-            color: white;
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
-
-        /* CONTAINER PRINCIPALE */
-        .app-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            background: white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        /* TIMELINE SIDEBAR */
-        .timeline-sidebar {
-            width: 300px;
-            background: linear-gradient(180deg, var(--dark) 0%, #2a2a4e 100%);
-            color: white;
-            overflow-y: auto;
-            padding: 30px 0;
-            border-right: 3px solid var(--accent);
-            position: relative;
-        }
-
-        .timeline-title {
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(139, 92, 246, 0.95) 50%, rgba(236, 72, 153, 0.95) 100%);
+            padding: 40px 20px;
             text-align: center;
-            padding: 0 20px 30px;
-            border-bottom: 2px solid var(--accent);
-            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideDownHeader 0.8s ease-out;
         }
 
-        .timeline-title h2 {
-            font-size: 1.5em;
-            margin-bottom: 5px;
-            color: var(--accent);
-        }
-
-        .timeline-title p {
-            font-size: 0.9em;
-            opacity: 0.7;
-        }
-
-        .timeline-item {
-            padding: 20px;
-            margin: 15px;
-            cursor: pointer;
-            border-left: 4px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .timeline-item.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .timeline-item.locked::after {
-            content: '🔒';
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5em;
-        }
-
-        .timeline-item.active {
-            background: linear-gradient(135deg, var(--accent), var(--primary));
-            border-left-color: #fff;
-            box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
-            transform: translateX(10px);
-        }
-
-        .timeline-item:hover:not(.locked) {
-            border-left-color: var(--accent);
-            background: rgba(240, 147, 251, 0.15);
-        }
-
-        .timeline-item h3 {
-            font-size: 1.1em;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .timeline-item p {
-            font-size: 0.85em;
-            opacity: 0.8;
-        }
-
-        .timeline-progress {
-            padding: 20px;
-            text-align: center;
-            background: rgba(0,0,0,0.3);
-            margin-top: auto;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .progress-text {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        /* MAIN CONTENT */
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 50px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,245,245,0.95) 100%);
-        }
-
-        .stage-wrapper {
-            display: none;
-            animation: slideIn 0.6s ease-out;
-        }
-
-        .stage-wrapper.active {
-            display: block;
-        }
-
-        @keyframes slideIn {
+        @keyframes slideDownHeader {
             from {
                 opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* STAGE HEADER */
-        .stage-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .stage-number {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .stage-header h1 {
-            color: var(--primary);
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .stage-header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        /* CONTENT CARDS */
-        .content-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .content-card:hover {
-            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
-            transform: translateY(-5px);
-        }
-
-        .content-card h2 {
-            color: var(--secondary);
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-
-        .content-card h3 {
-            color: var(--primary);
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .content-card p {
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 15px;
-            font-size: 1em;
-        }
-
-        /* INTERACTIVE ELEMENTS */
-        .interactive-box {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
-            border: 2px solid var(--primary);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
-        }
-
-        .interactive-box h3 {
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-
-        /* BUTTONS */
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 10px 5px;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--success), var(--accent));
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(0, 212, 170, 0.5);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* FORMULA */
-        .formula {
-            background: var(--dark);
-            color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1em;
-            margin: 15px 0;
-            overflow-x: auto;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        /* EXAMPLE */
-        .example {
-            background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(255, 165, 0, 0.15));
-            border-left: 5px solid var(--success);
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .example-title {
-            color: var(--success);
-            font-weight: 700;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        /* QUIZ */
-        .quiz-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .quiz-question {
-            margin-bottom: 20px;
-        }
-
-        .quiz-question h4 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        .quiz-option {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .quiz-option:hover {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .quiz-option input {
-            margin-right: 15px;
-            cursor: pointer;
-            width: 18px;
-            height: 18px;
-        }
-
-        .quiz-option.correct {
-            background: rgba(0, 212, 170, 0.2);
-            border-color: var(--success);
-        }
-
-        .quiz-option.incorrect {
-            background: rgba(255, 107, 107, 0.2);
-            border-color: var(--danger);
-        }
-
-        /* ACHIEVEMENT */
-        .achievement-popup {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, var(--warning), var(--accent));
-            color: white;
-            padding: 25px 35px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            animation: slideUp 0.5s ease-out;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(-50px);
             }
             to {
                 opacity: 1;
@@ -471,201 +55,403 @@
             }
         }
 
-        .achievement-popup h3 {
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .achievement-icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        /* NAVIGATION */
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        .nav-buttons button {
-            padding: 15px 40px;
-            font-size: 1.1em;
-        }
-
-        /* HIGHLIGHT */
-        .highlight {
-            background: linear-gradient(120deg, rgba(240, 147, 251, 0.3), rgba(102, 126, 234, 0.3));
-            padding: 20px;
-            border-left: 5px solid var(--primary);
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-
-        .highlight strong {
-            color: var(--secondary);
-        }
-
-        /* MOLECULE DISPLAY */
-        .molecule-display {
-            text-align: center;
+        .header h1 {
             font-size: 3em;
-            margin: 30px 0;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* CONTAINER PRINCIPALE */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* SEZIONE DI NAVIGAZIONE */
+        .navigation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .nav-card:hover::before {
+            left: 100%;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .nav-card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: inline-block;
             animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* VIDEO */
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 15px;
+        .nav-card h3 {
+            color: var(--primary);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .nav-card p {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .nav-card.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-color: var(--primary);
+        }
+
+        /* CONTENUTO PRINCIPALE */
+        .content-area {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-height: 500px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-area h2 {
+            color: var(--primary);
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+        }
+
+        .content-area h3 {
+            color: var(--secondary);
+            font-size: 1.6em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+
+        .content-area p {
+            color: #475569;
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        /* CARD DI CONTENUTO */
+        .content-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-left: 5px solid var(--primary);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+        }
+
+        .content-card strong {
+            color: var(--secondary);
+        }
+
+        /* LISTA */
+        ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        ul li {
+            color: #475569;
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        /* FORMULA CHIMICA */
+        .formula {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
             margin: 20px 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .video-container iframe {
+        .formula::before {
+            content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            border: none;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 2s infinite;
         }
 
-        /* TABLE */
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* TABELLA */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 25px 0;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         table th {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 15px;
+            padding: 18px;
             text-align: left;
             font-weight: 600;
+            font-size: 1em;
         }
 
         table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
+            padding: 15px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
         }
 
         table tr:hover {
-            background: rgba(102, 126, 234, 0.05);
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.05), transparent);
         }
 
         table tr:last-child td {
             border-bottom: none;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 1024px) {
-            .timeline-sidebar {
-                width: 250px;
-            }
-            .main-content {
-                padding: 30px;
-            }
+        /* PULSANTI */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 10px 5px 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-            .timeline-sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 150px;
-                border-right: none;
-                border-bottom: 3px solid var(--accent);
-                display: flex;
-                overflow-x: auto;
-                padding: 20px 0;
-            }
-            .timeline-item {
-                flex-shrink: 0;
-                margin: 0 10px;
-            }
-            .timeline-progress {
-                display: none;
-            }
-            .main-content {
-                padding: 20px;
-            }
-            .stage-header h1 {
-                font-size: 1.8em;
-            }
-            .nav-buttons {
-                flex-direction: column;
-            }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
         }
 
-        /* SCROLL */
-        ::-webkit-scrollbar {
-            width: 10px;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 5px;
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--secondary);
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
         }
 
-        .modal {
-            display: none;
-            position: fixed;
+        .btn-outline:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        }
+
+        /* INTERACTIVE BOXES */
+        .interactive-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-box::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .interactive-box h4 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            margin-top: 10px;
+        }
+
+        /* INPUT */
+        input, select {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
+            margin-bottom: 15px;
         }
 
-        .modal.active {
-            display: flex;
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
+        /* QUIZ */
+        .quiz-option {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: popIn 0.3s ease;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent);
+        }
+
+        .quiz-option input {
+            margin-right: 15px;
+            width: auto;
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), transparent);
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), transparent);
+            border-color: var(--danger);
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            margin: 30px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            width: 0%;
+            transition: width 0.5s ease;
+            animation: shimmer 2s infinite;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        /* ACHIEVEMENT */
+        .achievement {
+            background: linear-gradient(135deg, var(--warning) 0%, var(--accent) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: popIn 0.5s ease-out;
         }
 
         @keyframes popIn {
@@ -679,1425 +465,904 @@
             }
         }
 
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 2em;
-            cursor: pointer;
-            color: #999;
+        .achievement h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.5em;
         }
 
-        .modal-close:hover {
-            color: var(--danger);
+        /* MOLECULE DISPLAY */
+        .molecule-display {
+            text-align: center;
+            font-size: 4em;
+            margin: 30px 0;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content-area {
+                padding: 25px;
+            }
+
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .content-area h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        /* SECTION VISIBILITY */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* SCROLL */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+
+        /* GRADIENT BACKGROUND ANIMATION */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                #0f172a 0%,
+                #1e293b 25%,
+                #0f172a 50%,
+                #1e293b 75%,
+                #0f172a 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* FORMULA EFFECT */
+        .formula-highlight {
+            background: linear-gradient(120deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .formula-highlight::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
         }
     </style>
 </head>
 <body>
-    <!-- SCHERMATA DI CARICAMENTO -->
-    <div class="loading-screen">
-        <div class="loading-spinner"></div>
-        <h1>🧪 Chimica Interattiva</h1>
-        <p class="loading-text">Preparando il viaggio più affascinante della tua vita...</p>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>⚗️ Chimica Interattiva</h1>
+        <p>Corso Completo di Reazioni Chimiche e Stechiometria</p>
     </div>
 
-    <!-- APP CONTAINER -->
-    <div class="app-container">
-        <!-- TIMELINE SIDEBAR -->
-        <div class="timeline-sidebar">
-            <div class="timeline-title">
-                <h2>🎯 Il Tuo Viaggio</h2>
-                <p>Sblocca le tappe man mano che avanzi</p>
+    <!-- CONTAINER PRINCIPALE -->
+    <div class="container">
+        <!-- NAVIGAZIONE -->
+        <div class="navigation">
+            <div class="nav-card active" onclick="showSection('introduzione')">
+                <div class="nav-card-icon">🌟</div>
+                <h3>Introduzione</h3>
+                <p>Scopri i concetti fondamentali della chimica e perché è importante.</p>
             </div>
 
-            <div id="timeline-container"></div>
+            <div class="nav-card" onclick="showSection('atomi')">
+                <div class="nav-card-icon">⚛️</div>
+                <h3>Atomi e Molecole</h3>
+                <p>Comprendi la struttura fondamentale della materia.</p>
+            </div>
 
-            <div class="timeline-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-                <div class="progress-text" id="progress-text">0% Completato</div>
+            <div class="nav-card" onclick="showSection('elementi')">
+                <div class="nav-card-icon">🧬</div>
+                <h3>Elementi Chimici</h3>
+                <p>Esplora la tavola periodica e gli elementi comuni.</p>
+            </div>
+
+            <div class="nav-card" onclick="showSection('reazioni')">
+                <div class="nav-card-icon">⚡</div>
+                <h3>Reazioni Chimiche</h3>
+                <p>Impara come le sostanze si trasformano e reagiscono.</p>
+            </div>
+
+            <div class="nav-card" onclick="showSection('tipi-reazioni')">
+                <div class="nav-card-icon">🔥</div>
+                <h3>Tipi di Reazioni</h3>
+                <p>Scopri i cinque tipi principali di reazioni chimiche.</p>
+            </div>
+
+            <div class="nav-card" onclick="showSection('stechiometria')">
+                <div class="nav-card-icon">⚖️</div>
+                <h3>Stechiometria</h3>
+                <p>Impara a bilanciare le equazioni chimiche e fare calcoli.</p>
+            </div>
+
+            <div class="nav-card" onclick="showSection('esercizi')">
+                <div class="nav-card-icon">🎮</div>
+                <h3>Esercizi Interattivi</h3>
+                <p>Mettiti alla prova con esercizi pratici e quiz.</p>
+            </div>
+
+            <div class="nav-card" onclick="showSection('simulatore')">
+                <div class="nav-card-icon">🧪</div>
+                <h3>Simulatore Chimico</h3>
+                <p>Crea e simula reazioni chimiche virtuali.</p>
             </div>
         </div>
 
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            <div id="content-container"></div>
-        </div>
-    </div>
+        <!-- AREA CONTENUTO -->
+        <div class="content-area">
+            <!-- SEZIONE: INTRODUZIONE -->
+            <div id="introduzione" class="section active">
+                <h2>Introduzione alla Chimica</h2>
 
-    <!-- MODAL -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div id="modal-body"></div>
-        </div>
-    </div>
+                <p>La chimica è la scienza che studia la composizione della materia, le sue proprietà, le reazioni e le trasformazioni che subisce durante le quali non vengono alterati i nuclei atomici degli elementi.</p>
 
-    <script>
-        // ==================== STRUTTURA DEL CORSO ====================
-        
-        const course = [
-            {
-                id: 1,
-                title: '🌟 Introduzione',
-                subtitle: 'Scopri perché la chimica è ovunque',
-                icon: '🌟',
-                content: 'intro',
-                prerequisites: [],
-                duration: '5 min'
-            },
-            {
-                id: 2,
-                title: '⚛️ Atomi e Molecole',
-                subtitle: 'I mattoni della materia',
-                icon: '⚛️',
-                content: 'atoms',
-                prerequisites: [1],
-                duration: '10 min'
-            },
-            {
-                id: 3,
-                title: '🧬 Elementi Chimici',
-                subtitle: 'La tavola periodica',
-                icon: '🧬',
-                content: 'elements',
-                prerequisites: [2],
-                duration: '8 min'
-            },
-            {
-                id: 4,
-                title: '⚡ Cosa sono le Reazioni',
-                subtitle: 'Trasformazioni straordinarie',
-                icon: '⚡',
-                content: 'reactions_intro',
-                prerequisites: [3],
-                duration: '7 min'
-            },
-            {
-                id: 5,
-                title: '🔥 Tipi di Reazioni',
-                subtitle: 'Scopri i 5 tipi principali',
-                icon: '🔥',
-                content: 'reaction_types',
-                prerequisites: [4],
-                duration: '12 min'
-            },
-            {
-                id: 6,
-                title: '🧪 Quiz sulla Teoria',
-                subtitle: 'Verifica quello che hai imparato',
-                icon: '🧪',
-                content: 'quiz_1',
-                prerequisites: [5],
-                duration: '8 min'
-            },
-            {
-                id: 7,
-                title: '⚖️ Introduzione alla Stechiometria',
-                subtitle: 'L\'arte di equilibrare',
-                icon: '⚖️',
-                content: 'stoichio_intro',
-                prerequisites: [6],
-                duration: '10 min'
-            },
-            {
-                id: 8,
-                title: '📊 Equilibrare le Equazioni',
-                subtitle: 'Passaggi e tecniche',
-                icon: '📊',
-                content: 'balancing',
-                prerequisites: [7],
-                duration: '12 min'
-            },
-            {
-                id: 9,
-                title: '🧮 Calcoli Stechiometrici',
-                subtitle: 'Da teoria a pratica',
-                icon: '🧮',
-                content: 'stoichio_calc',
-                prerequisites: [8],
-                duration: '15 min'
-            },
-            {
-                id: 10,
-                title: '🎮 Esercizi Interattivi',
-                subtitle: 'Pratica con esempi reali',
-                icon: '🎮',
-                content: 'exercises',
-                prerequisites: [9],
-                duration: '20 min'
-            },
-            {
-                id: 11,
-                title: '🧬 Simulatore Chimico',
-                subtitle: 'Crea le tue reazioni',
-                icon: '🧬',
-                content: 'simulator',
-                prerequisites: [10],
-                duration: '15 min'
-            },
-            {
-                id: 12,
-                title: '📝 Quiz Finale',
-                subtitle: 'Mettiti alla prova',
-                icon: '📝',
-                content: 'quiz_final',
-                prerequisites: [11],
-                duration: '10 min'
-            },
-            {
-                id: 13,
-                title: '🏆 Laboratorio Avanzato',
-                subtitle: 'Esperimenti complessi',
-                icon: '🏆',
-                content: 'advanced_lab',
-                prerequisites: [12],
-                duration: '25 min'
-            },
-            {
-                id: 14,
-                title: '💎 Chimica nel Mondo Reale',
-                subtitle: 'Applicazioni pratiche',
-                icon: '💎',
-                content: 'real_world',
-                prerequisites: [13],
-                duration: '12 min'
-            },
-            {
-                id: 15,
-                title: '🎓 Certificato di Completamento',
-                subtitle: 'Sei un esperto!',
-                icon: '🎓',
-                content: 'certificate',
-                prerequisites: [14],
-                duration: '2 min'
-            }
-        ];
-
-        // ==================== STATE ====================
-        
-        let userState = {
-            completedStages: [],
-            currentStage: 1,
-            score: 0,
-            startTime: Date.now()
-        };
-
-        // ==================== CONTENUTI ====================
-        
-        const contents = {
-            intro: `
-                <h2>🌟 Benvenuta nel Mondo della Chimica!</h2>
-                <p>La chimica è la scienza che studia come le sostanze si trasformano e interagiscono. È ovunque intorno a te:</p>
-                
-                <div class="example">
-                    <div class="example-title">💡 Esempi Quotidiani</div>
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li>🔥 Quando cucini, le proteine cambiano struttura per il calore</li>
-                        <li>🌱 La fotosintesi delle piante converte luce in energia chimica</li>
-                        <li>🧃 Quando bevi una bibita gassata, le bolle sono gas chimici</li>
-                        <li>💪 Il tuo corpo usa reazioni chimiche per trasformare il cibo in energia</li>
-                    </ul>
+                <div class="content-card">
+                    <strong>Definizione Scientifica:</strong> La chimica analizza le strutture molecolari, gli stati della materia e gli equilibri che si stabiliscono tra le diverse specie chimiche in varie condizioni ambientali.
                 </div>
 
-                <h3>Cosa Imparerai in Questo Viaggio</h3>
-                <p>In questa esperienza coinvolgente scoprirai:</p>
-                <ul style="margin-left: 20px;">
-                    <li>✅ Come funzionano gli atomi e le molecole</li>
-                    <li>✅ Cos'è una reazione chimica e come rappresentarla</li>
-                    <li>✅ La stechiometria: come calcolare le quantità</li>
-                    <li>✅ Applicazioni pratiche nel mondo reale</li>
+                <h3>Perché è Importante la Chimica</h3>
+                <p>La chimica è fondamentale in molteplici campi della nostra vita quotidiana:</p>
+                <ul>
+                    <li><strong>Medicina:</strong> Sviluppo di farmaci e terapie per curare malattie</li>
+                    <li><strong>Alimentazione:</strong> Processi di conservazione e trasformazione dei cibi</li>
+                    <li><strong>Energia:</strong> Produzione di combustibili e batterie</li>
+                    <li><strong>Ambiente:</strong> Trattamento delle acque e dell'aria</li>
+                    <li><strong>Tecnologia:</strong> Creazione di materiali e componenti elettronici</li>
+                    <li><strong>Cosmetica:</strong> Sviluppo di prodotti per la cura della pelle</li>
                 </ul>
 
-                <div class="highlight">
-                    <strong>🚀 Pronti a iniziare?</strong> Ogni tappa sblocca la prossima quando la completi. Procedi al tuo ritmo e divertiti!
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-primary" onclick="nextStage()">Continua al Prossimo →</button>
-                </div>
-            `,
-
-            atoms: `
-                <h2>⚛️ Atomi e Molecole: I Mattoni della Materia</h2>
-                <p>Tutto quello che vedi è fatto di atomi, le particelle più piccole che mantengono le proprietà di un elemento.</p>
+                <h3>Obiettivi del Corso</h3>
+                <p>Al termine di questo corso avrai acquisito le seguenti competenze:</p>
+                <ul>
+                    <li>Comprensione dei concetti fondamentali di atomi e molecole</li>
+                    <li>Capacità di riconoscere e classificare le reazioni chimiche</li>
+                    <li>Abilità nel bilanciare le equazioni chimiche</li>
+                    <li>Competenza nei calcoli stechiometrici</li>
+                    <li>Applicazione della chimica in contesti reali</li>
+                </ul>
 
                 <div class="interactive-box">
-                    <h3>🔬 Cosa sono gli Atomi?</h3>
-                    <p>Un atomo è la più piccola unità di un elemento chimico. Non può essere diviso mantenendo le sue proprietà.</p>
-                    <div class="molecule-display">⚛️</div>
+                    <h4>Curiosità Chimica</h4>
+                    <p>Sapevi che il tuo corpo contiene elementi formati nelle stelle? Il carbonio, l'ossigeno e l'azoto che compongono le tue cellule sono stati creati nelle reazioni nucleari stellari miliardi di anni fa.</p>
                 </div>
 
-                <h3>Atomi vs Molecole</h3>
-                <p><strong>Atomo:</strong> Una singola particella di un elemento (es: un atomo di ossigeno = O)</p>
-                <p><strong>Molecola:</strong> Due o più atomi legati insieme (es: due atomi di ossigeno legati = O₂)</p>
+                <button class="btn btn-primary" onclick="showSection('atomi')">Continua con Atomi e Molecole →</button>
+            </div>
 
-                <div class="example">
-                    <div class="example-title">💧 Esempio: L'Acqua</div>
-                    <p>Una molecola di acqua (H₂O) è composta da:</p>
-                    <ul style="margin-left: 20px;">
-                        <li>2 atomi di Idrogeno (H)</li>
-                        <li>1 atomo di Ossigeno (O)</li>
-                    </ul>
-                    <div class="molecule-display">💧</div>
+            <!-- SEZIONE: ATOMI E MOLECOLE -->
+            <div id="atomi" class="section">
+                <h2>Atomi e Molecole</h2>
+
+                <p>Tutto ciò che osserviamo nell'universo è composto da atomi, le particelle più piccole che mantengono le proprietà chimiche di un elemento.</p>
+
+                <h3>La Struttura dell'Atomo</h3>
+                <p>Un atomo è costituito da:</p>
+                <ul>
+                    <li><strong>Nucleo:</strong> Contiene protoni (carica positiva) e neutroni (neutri)</li>
+                    <li><strong>Corteccia Elettronica:</strong> Contiene elettroni (carica negativa) che orbitano attorno al nucleo</li>
+                </ul>
+
+                <div class="molecule-display">⚛️</div>
+
+                <div class="content-card">
+                    <strong>Definizione di Atomo:</strong> Particella più piccola di una sostanza semplice che conserva le proprietà chimiche dell'elemento.
                 </div>
 
-                <h3>🎮 Attività Interattiva</h3>
-                <p>Clicca sui diversi atomi per scoprirne le proprietà:</p>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0;">
-                    <button class="btn btn-secondary" onclick="atomInfo('H', 'Idrogeno')">H - Idrogeno</button>
-                    <button class="btn btn-secondary" onclick="atomInfo('O', 'Ossigeno')">O - Ossigeno</button>
-                    <button class="btn btn-secondary" onclick="atomInfo('C', 'Carbonio')">C - Carbonio</button>
-                    <button class="btn btn-secondary" onclick="atomInfo('N', 'Azoto')">N - Azoto</button>
+                <h3>Differenza tra Atomi e Molecole</h3>
+
+                <table>
+                    <tr>
+                        <th>Aspetto</th>
+                        <th>Atomo</th>
+                        <th>Molecola</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Definizione</strong></td>
+                        <td>Particella singola di un elemento</td>
+                        <td>Aggregato di due o più atomi legati</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Composizione</strong></td>
+                        <td>Un unico tipo di nucleo</td>
+                        <td>Più nuclei (uguali o diversi)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Esempio</strong></td>
+                        <td>O (ossigeno singolo)</td>
+                        <td>O₂ (ossigeno molecolare)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stabilità</strong></td>
+                        <td>Generalmente instabile</td>
+                        <td>Più stabile</td>
+                    </tr>
+                </table>
+
+                <h3>Esempi Comuni di Molecole</h3>
+
+                <div class="content-card">
+                    <p><strong>Acqua (H₂O):</strong> Formata da 2 atomi di idrogeno e 1 di ossigeno. Essenziale per la vita.</p>
+                    <div class="formula">H₂O = 2H + O</div>
                 </div>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
+                <div class="content-card">
+                    <p><strong>Anidride Carbonica (CO₂):</strong> Formata da 1 atomo di carbonio e 2 di ossigeno. Prodotta dalla respirazione.</p>
+                    <div class="formula">CO₂ = C + 2O</div>
                 </div>
-            `,
 
-            elements: `
-                <h2>🧬 La Tavola Periodica: Gli Elementi Chimici</h2>
-                <p>La tavola periodica è come una mappa di tutti i 118 elementi noti. Noi ci focalizzeremo su quelli più comuni:</p>
+                <div class="content-card">
+                    <p><strong>Metano (CH₄):</strong> Formata da 1 atomo di carbonio e 4 di idrogeno. Componente del gas naturale.</p>
+                    <div class="formula">CH₄ = C + 4H</div>
+                </div>
 
-                <h3>Elementi Fondamentali</h3>
+                <h3>Numero Atomico e Massa Atomica</h3>
+                <ul>
+                    <li><strong>Numero Atomico:</strong> Numero di protoni nel nucleo (determina l'elemento)</li>
+                    <li><strong>Numero di Massa:</strong> Somma di protoni e neutroni</li>
+                    <li><strong>Massa Atomica:</strong> Peso medio di un atomo (in unità di massa atomica)</li>
+                </ul>
+
+                <button class="btn btn-outline" onclick="showSection('introduzione')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('elementi')">Continua con Elementi Chimici →</button>
+            </div>
+
+            <!-- SEZIONE: ELEMENTI CHIMICI -->
+            <div id="elementi" class="section">
+                <h2>Elementi Chimici</h2>
+
+                <p>Un elemento chimico è una sostanza pura formata da atomi dello stesso tipo, caratterizzata da uno specifico numero atomico.</p>
+
+                <h3>La Tavola Periodica degli Elementi</h3>
+                <p>La tavola periodica organizza i 118 elementi noti secondo il loro numero atomico e proprietà chimiche. Scopriamo i più comuni:</p>
+
                 <table>
                     <tr>
                         <th>Simbolo</th>
-                        <th>Nome</th>
+                        <th>Elemento</th>
+                        <th>Numero Atomico</th>
                         <th>Massa Atomica</th>
-                        <th>Caratteristiche</th>
+                        <th>Utilizzi Comuni</th>
                     </tr>
                     <tr>
                         <td><strong>H</strong></td>
                         <td>Idrogeno</td>
                         <td>1</td>
-                        <td>Il più leggero, importante per l'acqua</td>
+                        <td>1.008</td>
+                        <td>Combustibile, acqua, accumulatori</td>
                     </tr>
                     <tr>
                         <td><strong>C</strong></td>
                         <td>Carbonio</td>
-                        <td>12</td>
-                        <td>Base della chimica organica</td>
+                        <td>6</td>
+                        <td>12.01</td>
+                        <td>Base della chimica organica, diamanti</td>
                     </tr>
                     <tr>
                         <td><strong>N</strong></td>
                         <td>Azoto</td>
-                        <td>14</td>
-                        <td>78% dell'aria che respiri</td>
+                        <td>7</td>
+                        <td>14.01</td>
+                        <td>Atmosfera, fertilizzanti, proteine</td>
                     </tr>
                     <tr>
                         <td><strong>O</strong></td>
                         <td>Ossigeno</td>
-                        <td>16</td>
-                        <td>Essenziale per la respirazione</td>
+                        <td>8</td>
+                        <td>16.00</td>
+                        <td>Respirazione, combustione, acqua</td>
                     </tr>
                     <tr>
                         <td><strong>Na</strong></td>
                         <td>Sodio</td>
-                        <td>23</td>
-                        <td>Componente del sale da cucina</td>
+                        <td>11</td>
+                        <td>22.99</td>
+                        <td>Cloruro di sodio (sale), chimici industriali</td>
                     </tr>
                     <tr>
                         <td><strong>Cl</strong></td>
                         <td>Cloro</td>
-                        <td>35.5</td>
-                        <td>Usato per disinfettare l'acqua</td>
+                        <td>17</td>
+                        <td>35.45</td>
+                        <td>Disinfettante, produzione di plastica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ca</strong></td>
+                        <td>Calcio</td>
+                        <td>20</td>
+                        <td>40.08</td>
+                        <td>Ossa, denti, cemento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fe</strong></td>
+                        <td>Ferro</td>
+                        <td>26</td>
+                        <td>55.85</td>
+                        <td>Acciaio, costruzioni, sangue</td>
                     </tr>
                 </table>
 
-                <div class="interactive-box">
-                    <h3>🎯 Attività: Scopri gli Elementi</h3>
-                    <p>Passa il mouse su ogni elemento per scoprire dove lo trovi nella vita quotidiana:</p>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                        <div style="padding: 15px; background: rgba(102,126,234,0.2); border-radius: 10px; cursor: help;" 
-                             title="Lo trovi nell'acqua, nei combustibili, nelle cellule viventi">
-                            <strong>Idrogeno (H)</strong><br>
-                            <small>Elemento più leggero</small>
-                        </div>
-                        <div style="padding: 15px; background: rgba(240,147,251,0.2); border-radius: 10px; cursor: help;"
-                             title="Base di tutti gli esseri viventi">
-                            <strong>Carbonio (C)</strong><br>
-                            <small>Elemento della vita</small>
-                        </div>
-                        <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px; cursor: help;"
-                             title="Respiriamo l'ossigeno, ci serve per vivere">
-                            <strong>Ossigeno (O)</strong><br>
-                            <small>Elemento vitale</small>
-                        </div>
-                    </div>
+                <h3>Proprietà Periodiche degli Elementi</h3>
+                <div class="content-card">
+                    <p><strong>Reattività:</strong> Varia periodicamente lungo la tavola. I metalli alcalini sono molto reattivi, i gas nobili poco reattivi.</p>
                 </div>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            reactions_intro: `
-                <h2>⚡ Cosa Sono le Reazioni Chimiche</h2>
-                <p>Una reazione chimica è un processo in cui le sostanze iniziali (reagenti) si trasformano in nuove sostanze (prodotti) attraverso la rottura e la formazione di legami chimici.</p>
-
-                <div class="interactive-box">
-                    <h3>🔥 Caratteristiche di una Reazione Chimica</h3>
-                    <p>Una reazione chimica accade quando:</p>
-                    <ul style="margin-left: 20px; margin-top: 15px;">
-                        <li>🎨 <strong>Cambia il colore</strong> - La soluzione diventa di un colore diverso</li>
-                        <li>🌡️ <strong>Cambia la temperatura</strong> - Diventa più calda o più fredda</li>
-                        <li>💨 <strong>Si produce gas</strong> - Si vedono bolle o fumo</li>
-                        <li>💎 <strong>Si forma un precipitato</strong> - Appare una polvere solida</li>
-                        <li>🔊 <strong>Cambiano odori o suoni</strong> - Si sente uno scoppio o un odore</li>
-                    </ul>
+                <div class="content-card">
+                    <p><strong>Elettronegatività:</strong> Capacità di attirare elettroni. Aumenta da sinistra a destra e dal basso verso l'alto.</p>
                 </div>
 
-                <h3>La Formula di una Reazione</h3>
-                <p>Si rappresenta così:</p>
-                <div class="formula">
-                    Reagenti → Prodotti
+                <div class="content-card">
+                    <p><strong>Raggio Atomico:</strong> Dimensione dell'atomo. Diminuisce da sinistra a destra, aumenta dal basso verso l'alto.</p>
                 </div>
 
-                <div class="example">
-                    <div class="example-title">🕯️ Esempio Pratico: Accendere una Candela</div>
-                    <p>Quando accendi una candela avviene una reazione chimica:</p>
-                    <div class="formula">
-                        Cera + Ossigeno → Anidride Carbonica + Acqua + Calore
-                    </div>
-                    <p>Osservi: 🔥 Fuoco (calore) e 💨 fumo (prodotti gassosi)</p>
-                </div>
+                <button class="btn btn-outline" onclick="showSection('atomi')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('reazioni')">Continua con Reazioni Chimiche →</button>
+            </div>
 
-                <div class="interactive-box">
-                    <h3>🧪 Esperimento Virtuale</h3>
-                    <p>Prova questo semplice esperimento che puoi fare a casa:</p>
-                    <p><strong>Aceto + Bicarbonato di Sodio</strong></p>
-                    <p>Metti del bicarbonato in un bicchiere, aggiungi l'aceto e osserva!</p>
-                    <button class="btn btn-secondary" onclick="startExperiment('aceto')">Simula l'Esperimento</button>
-                    <div id="experiment-result"></div>
-                </div>
+            <!-- SEZIONE: REAZIONI CHIMICHE -->
+            <div id="reazioni" class="section">
+                <h2>Reazioni Chimiche</h2>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
+                <p>Una reazione chimica è un processo mediante il quale una o più sostanze (reagenti) si trasformano in una o più sostanze diverse (prodotti), con conseguenti variazioni nelle loro proprietà fisiche e chimiche.</p>
 
-            reaction_types: `
-                <h2>🔥 I 5 Tipi Principali di Reazioni Chimiche</h2>
-                <p>Le reazioni chimiche si dividono in categorie. Scopriamole una per una:</p>
-
-                <h3>1️⃣ Reazioni di Sintesi (Combinazione)</h3>
-                <p>Due o più sostanze si combinano per formare una nuova sostanza.</p>
-                <div class="formula">A + B → AB</div>
-                <div class="example">
-                    <div class="example-title">Esempio: Formazione dell'Acqua</div>
-                    <div class="formula">2H₂ + O₂ → 2H₂O</div>
-                    <p>Due molecole di idrogeno + una di ossigeno = due di acqua</p>
-                </div>
-
-                <h3>2️⃣ Reazioni di Decomposizione</h3>
-                <p>Una sostanza si divide in due o più sostanze più semplici.</p>
-                <div class="formula">AB → A + B</div>
-                <div class="example">
-                    <div class="example-title">Esempio: Decomposizione dell'Acqua</div>
-                    <div class="formula">2H₂O → 2H₂ + O₂</div>
-                    <p>Con corrente elettrica, l'acqua si scinde in idrogeno e ossigeno</p>
-                </div>
-
-                <h3>3️⃣ Reazioni di Sostituzione Singola</h3>
-                <p>Un elemento sostituisce un altro in una sostanza.</p>
-                <div class="formula">A + BC → AC + B</div>
-                <div class="example">
-                    <div class="example-title">Esempio: Ferro e Rame</div>
-                    <div class="formula">Fe + CuSO₄ → FeSO₄ + Cu</div>
-                    <p>Il ferro è più reattivo e prende il posto del rame</p>
-                </div>
-
-                <h3>4️⃣ Reazioni di Doppia Sostituzione</h3>
-                <p>Due composti scambiano i loro ioni.</p>
-                <div class="formula">AB + CD → AD + CB</div>
-                <div class="example">
-                    <div class="example-title">Esempio: Neutralizzazione Acido-Base</div>
-                    <div class="formula">HCl + NaOH → NaCl + H₂O</div>
-                    <p>Un acido e una base si neutralizzano formando un sale e acqua</p>
-                </div>
-
-                <h3>5️⃣ Reazioni di Combustione</h3>
-                <p>Una sostanza brucia in ossigeno, rilasciando energia.</p>
-                <div class="formula">Combustibile + O₂ → CO₂ + H₂O + Energia</div>
-                <div class="example">
-                    <div class="example-title">Esempio: Combustione del Metano</div>
-                    <div class="formula">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
-                    <p>Il gas naturale brucia quando cucini</p>
-                </div>
-
-                <div class="interactive-box">
-                    <h3>🎯 Quiz Veloce</h3>
-                    <p>Che tipo di reazione è: 2H₂O → 2H₂ + O₂?</p>
-                    <div class="quiz-option" onclick="checkReactionType('decomposizione', true)">
-                        <input type="radio" name="reaction">
-                        <label>Decomposizione</label>
-                    </div>
-                    <div class="quiz-option" onclick="checkReactionType('sintesi', false)">
-                        <input type="radio" name="reaction">
-                        <label>Sintesi</label>
-                    </div>
-                    <div id="reaction-feedback"></div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            quiz_1: `
-                <h2>🧪 Quiz: Verifica il Tuo Apprendimento</h2>
-                <p>Rispondi a queste domande per consolidare quello che hai imparato:</p>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">
-                        <h4>Domanda 1: Cosa è un atomo?</h4>
-                        <div class="quiz-option" onclick="answerQuiz(1, 0, true)">
-                            <input type="radio" name="q1">
-                            <label>La più piccola unità di un elemento che mantiene le sue proprietà</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerQuiz(1, 1, false)">
-                            <input type="radio" name="q1">
-                            <label>Una grande molecola di gas</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerQuiz(1, 2, false)">
-                            <input type="radio" name="q1">
-                            <label>L'opposto di una molecola</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Domanda 2: Quanti elementi compongono una molecola di acqua (H₂O)?</h4>
-                        <div class="quiz-option" onclick="answerQuiz(2, 0, false)">
-                            <input type="radio" name="q2">
-                            <label>2 elementi</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerQuiz(2, 1, false)">
-                            <input type="radio" name="q2">
-                            <label>4 atomi dello stesso tipo</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerQuiz(2, 2, true)">
-                            <input type="radio" name="q2">
-                            <label>3 atomi (2 idrogeno + 1 ossigeno)</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Domanda 3: Quale è una caratteristica di una reazione chimica?</h4>
-                        <div class="quiz-option" onclick="answerQuiz(3, 0, true)">
-                            <input type="radio" name="q3">
-                            <label>Cambiamento di colore o temperatura</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerQuiz(3, 1, false)">
-                            <input type="radio" name="q3">
-                            <label>Non cambia nulla</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerQuiz(3, 2, false)">
-                            <input type="radio" name="q3">
-                            <label>Solo i liquidi reagiscono</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            stoichio_intro: `
-                <h2>⚖️ La Stechiometria: L'Arte di Equilibrare</h2>
-                <p>La stechiometria è lo studio delle proporzioni in cui le sostanze chimiche reagiscono. È come seguire una ricetta: se vuoi fare 2 torte, devi raddoppiare tutti gli ingredienti!</p>
-
-                <div class="highlight">
-                    <strong>🔑 La Legge di Lavoisier (Conservazione della Massa):</strong>
-                    <br>In una reazione chimica, la massa totale dei reagenti è sempre uguale alla massa totale dei prodotti. Nulla si crea, nulla si distrugge, tutto si trasforma!
-                </div>
-
-                <h3>Perché è Importante?</h3>
-                <p>La stechiometria ci permette di:</p>
-                <ul style="margin-left: 20px;">
-                    <li>📊 Sapere esattamente quanta sostanza produce una reazione</li>
-                    <li>💰 Risparmiare denaro utilizzando solo quello che serve</li>
-                    <li>🧪 Fare esperimenti scientificamente corretti</li>
-                    <li>🏭 Produrre medicinali, carburanti e prodotti chimici</li>
+                <h3>Caratteristiche Osservabili di una Reazione Chimica</h3>
+                <ul>
+                    <li><strong>Cambiamento di Colore:</strong> La soluzione acquista una colorazione diversa</li>
+                    <li><strong>Variazione di Temperatura:</strong> La sostanza diventa più calda (esotermica) o più fredda (endotermica)</li>
+                    <li><strong>Produzione di Gas:</strong> Si osservano bolle e rilascio di gas inodore o con odore caratteristico</li>
+                    <li><strong>Formazione di Precipitato:</strong> Compagre una polvere solida sospesa nel liquido</li>
+                    <li><strong>Cambiamenti di Stato:</strong> Una sostanza può cambiare stato fisico</li>
+                    <li><strong>Effetti Luminosi:</strong> Emissione di luce durante la reazione</li>
                 </ul>
 
-                <div class="interactive-box">
-                    <h3>🎯 Esempio: Una Ricetta Chimica</h3>
-                    <p>Pensa a una ricetta: Se leggi "Ingredienti per 2 persone", e vuoi fare per 6 persone, moltiplichi tutto per 3.</p>
-                    <p>Allo stesso modo, in una reazione chimica devi equilibrare gli ingredienti chimici!</p>
+                <h3>Rappresentazione delle Reazioni Chimiche</h3>
+                <p>Una reazione chimica si rappresenta mediante un'equazione chimica:</p>
+                <div class="formula">Reagenti → Prodotti</div>
+
+                <div class="content-card">
+                    <strong>Esempio:</strong> La combustione del metano:
+                    <div class="formula">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+                    <p style="margin-top: 10px;">Dove CH₄ e O₂ sono i reagenti, mentre CO₂ e H₂O sono i prodotti.</p>
                 </div>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
+                <h3>Legge di Conservazione della Massa</h3>
+                <p>In una reazione chimica, la massa totale dei reagenti è sempre uguale alla massa totale dei prodotti. La materia non viene né creata né distrutta, bensì trasformata.</p>
+
+                <h3>Tipi di Reazioni per Categoria Energetica</h3>
+                <div class="content-card">
+                    <p><strong>Reazioni Esotermiche:</strong> Rilasciano energia sotto forma di calore o luce. Esempi: combustione, neutralizzazione acido-base.</p>
                 </div>
-            `,
 
-            balancing: `
-                <h2>📊 Come Equilibrare le Equazioni Chimiche</h2>
-                <p>Quando scrivi una reazione chimica, devi assicurarti che il numero di atomi di ogni elemento sia uguale su entrambi i lati.</p>
+                <div class="content-card">
+                    <p><strong>Reazioni Endotermiche:</strong> Assorbono energia dall'ambiente. Esempi: evaporazione, fotosintesi.</p>
+                </div>
 
-                <h3>Passaggi per Equilibrare</h3>
-                <ol style="margin-left: 20px; line-height: 2;">
-                    <li><strong>Scrivi l'equazione non equilibrata</strong></li>
-                    <li><strong>Conta gli atomi di ogni elemento</strong> a sinistra (reagenti) e a destra (prodotti)</li>
-                    <li><strong>Aggiungi coefficienti (numeri davanti)</strong> per fare corrispondere i numeri</li>
-                    <li><strong>Verifica:</strong> Tutti gli elementi devono avere lo stesso numero</li>
+                <h3>Fattori che Influenzano la Velocità di Reazione</h3>
+                <ul>
+                    <li><strong>Temperatura:</strong> Aumentare la temperatura accelera la reazione</li>
+                    <li><strong>Concentrazione:</strong> Maggior concentrazione di reagenti accelera la reazione</li>
+                    <li><strong>Superficie di Contatto:</strong> Aumentare la superficie accelera la reazione</li>
+                    <li><strong>Catalizzatori:</strong> Sostanze che accelerano la reazione senza consumarsi</li>
+                    <li><strong>Pressione:</strong> Per reazioni gassose, aumentare la pressione accelera la reazione</li>
+                </ul>
+
+                <button class="btn btn-outline" onclick="showSection('elementi')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('tipi-reazioni')">Continua con Tipi di Reazioni →</button>
+            </div>
+
+            <!-- SEZIONE: TIPI DI REAZIONI -->
+            <div id="tipi-reazioni" class="section">
+                <h2>Tipi Principali di Reazioni Chimiche</h2>
+
+                <p>Le reazioni chimiche possono essere classificate in base ai meccanismi di reazione e al tipo di atomi o ioni coinvolti. Ecco i cinque tipi fondamentali:</p>
+
+                <h3>1. Reazioni di Sintesi (Combinazione)</h3>
+                <p>Due o più sostanze si combinano per formarne una nuova.</p>
+                <div class="formula">A + B → AB</div>
+
+                <div class="content-card">
+                    <p><strong>Esempio: Formazione dell'Acqua</strong></p>
+                    <div class="formula">2H₂ + O₂ → 2H₂O</div>
+                    <p style="margin-top: 10px;">Due molecole di idrogeno si combinano con una di ossigeno per creare acqua.</p>
+                </div>
+
+                <h3>2. Reazioni di Decomposizione</h3>
+                <p>Una sostanza si divide in due o più sostanze più semplici.</p>
+                <div class="formula">AB → A + B</div>
+
+                <div class="content-card">
+                    <p><strong>Esempio: Decomposizione dell'Acqua</strong></p>
+                    <div class="formula">2H₂O → 2H₂ + O₂</div>
+                    <p style="margin-top: 10px;">Con corrente elettrica, l'acqua si scinde in idrogeno e ossigeno.</p>
+                </div>
+
+                <h3>3. Reazioni di Sostituzione Singola</h3>
+                <p>Un elemento sostituisce un altro elemento in un composto.</p>
+                <div class="formula">A + BC → AC + B</div>
+
+                <div class="content-card">
+                    <p><strong>Esempio: Ferro e Solfato di Rame</strong></p>
+                    <div class="formula">Fe + CuSO₄ → FeSO₄ + Cu</div>
+                    <p style="margin-top: 10px;">Il ferro, più reattivo del rame, prende il suo posto nel composto.</p>
+                </div>
+
+                <h3>4. Reazioni di Doppia Sostituzione</h3>
+                <p>Due composti scambiano i loro ioni in una reazione tra loro.</p>
+                <div class="formula">AB + CD → AD + CB</div>
+
+                <div class="content-card">
+                    <p><strong>Esempio: Neutralizzazione Acido-Base</strong></p>
+                    <div class="formula">HCl + NaOH → NaCl + H₂O</div>
+                    <p style="margin-top: 10px;">Un acido e una base si neutralizzano reciprocamente formando un sale e acqua.</p>
+                </div>
+
+                <h3>5. Reazioni di Combustione</h3>
+                <p>Una sostanza reagisce con l'ossigeno, producendo energia (calore e luce).</p>
+                <div class="formula">Combustibile + O₂ → CO₂ + H₂O + Energia</div>
+
+                <div class="content-card">
+                    <p><strong>Esempio: Combustione del Metano</strong></p>
+                    <div class="formula">CH₄ + 2O₂ → CO₂ + 2H₂O + Energia</div>
+                    <p style="margin-top: 10px;">Il gas naturale brucia in presenza di ossigeno, liberando energia sotto forma di calore.</p>
+                </div>
+
+                <button class="btn btn-outline" onclick="showSection('reazioni')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('stechiometria')">Continua con Stechiometria →</button>
+            </div>
+
+            <!-- SEZIONE: STECHIOMETRIA -->
+            <div id="stechiometria" class="section">
+                <h2>Stechiometria</h2>
+
+                <p>La stechiometria è lo studio delle proporzioni quantitative dei reagenti e dei prodotti in una reazione chimica. Permette di calcolare le quantità di sostanze coinvolte in una reazione.</p>
+
+                <h3>Principi Fondamentali della Stechiometria</h3>
+                <div class="content-card">
+                    <p><strong>Legge di Conservazione della Massa:</strong> La massa totale dei reagenti è uguale alla massa totale dei prodotti.</p>
+                </div>
+
+                <div class="content-card">
+                    <p><strong>Rapporti Molari:</strong> In una reazione bilanciata, i coefficienti indicano il rapporto tra il numero di moli di reagenti e prodotti.</p>
+                </div>
+
+                <h3>Equilibramento delle Equazioni Chimiche</h3>
+                <p>Un'equazione chimica deve essere bilanciata affinché il numero di atomi di ogni elemento sia identico su entrambi i lati.</p>
+
+                <p><strong>Passaggi per bilanciare un'equazione:</strong></p>
+                <ol>
+                    <li>Scrivi l'equazione non bilanciata</li>
+                    <li>Conta il numero di atomi di ogni elemento nei reagenti e nei prodotti</li>
+                    <li>Inserisci coefficienti davanti ai composti per bilanciare</li>
+                    <li>Verifica che gli atomi di ogni elemento siano uguali su entrambi i lati</li>
                 </ol>
 
-                <h3>Esempio Pratico: Combustione dell'Idrogeno</h3>
-                <p>Partiamo da: <div class="formula" style="display: inline; padding: 5px 10px;">H₂ + O₂ → H₂O</div></p>
+                <h3>Esempio di Bilanciamento: Combustione del Metano</h3>
+                <p><strong>Equazione non bilanciata:</strong></p>
+                <div class="formula">CH₄ + O₂ → CO₂ + H₂O</div>
 
-                <div style="background: rgba(102,126,234,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                    <p><strong>Step 1: Contiamo gli atomi</strong></p>
-                    <table style="margin-top: 10px;">
-                        <tr style="background: rgba(102,126,234,0.2);">
-                            <th>Elemento</th>
-                            <th>Reagenti</th>
-                            <th>Prodotti</th>
-                        </tr>
-                        <tr>
-                            <td><strong>H</strong></td>
-                            <td>2</td>
-                            <td>2 ✅</td>
-                        </tr>
-                        <tr>
-                            <td><strong>O</strong></td>
-                            <td>2</td>
-                            <td>1 ❌</td>
-                        </tr>
-                    </table>
-                    <p style="margin-top: 10px;"><strong>Non è equilibrato!</strong> Abbiamo 2 ossigeni a sinistra e 1 a destra.</p>
+                <p style="margin-top: 20px;"><strong>Conteggio degli atomi (non bilanciato):</strong></p>
+                <ul>
+                    <li>C: 1 (sx) = 1 (dx) ✓</li>
+                    <li>H: 4 (sx) = 2 (dx) ✗</li>
+                    <li>O: 2 (sx) = 4 (dx) ✗</li>
+                </ul>
+
+                <p style="margin-top: 20px;"><strong>Bilanciamento:</strong></p>
+                <div class="formula">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+
+                <p style="margin-top: 20px;"><strong>Verifica (bilanciato):</strong></p>
+                <ul>
+                    <li>C: 1 (sx) = 1 (dx) ✓</li>
+                    <li>H: 4 (sx) = 4 (dx) ✓</li>
+                    <li>O: 4 (sx) = 4 (dx) ✓</li>
+                </ul>
+
+                <h3>Mole e Massa Molare</h3>
+                <div class="content-card">
+                    <p><strong>Mole:</strong> Unità di misura della quantità di sostanza. Una mole contiene 6,022 × 10²³ particelle (numero di Avogadro).</p>
                 </div>
 
-                <div style="background: rgba(0,212,170,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                    <p><strong>Step 2: Aggiungi un 2 davanti a H₂O</strong></p>
-                    <div class="formula">H₂ + O₂ → 2H₂O</div>
-                    <p style="margin-top: 10px;"><strong>Verifica finale:</strong></p>
-                    <table style="margin-top: 10px;">
-                        <tr style="background: rgba(0,212,170,0.2);">
-                            <th>Elemento</th>
-                            <th>Reagenti</th>
-                            <th>Prodotti</th>
-                        </tr>
-                        <tr>
-                            <td><strong>H</strong></td>
-                            <td>2</td>
-                            <td>4 ❌</td>
-                        </tr>
-                        <tr>
-                            <td><strong>O</strong></td>
-                            <td>2</td>
-                            <td>2 ✅</td>
-                        </tr>
-                    </table>
-                    <p style="margin-top: 10px;">Ora l'idrogeno non è equilibrato! Aggiungiamo 2 davanti a H₂...</p>
+                <div class="content-card">
+                    <p><strong>Massa Molare:</strong> Massa in grammi di una mole di una sostanza. Si calcola sommando le masse atomiche di tutti gli atomi nella formula.</p>
                 </div>
 
-                <div style="background: rgba(255,165,0,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                    <p><strong>Step 3: Versione Finale Equilibrata</strong></p>
-                    <div class="formula">2H₂ + O₂ → 2H₂O</div>
-                    <p style="margin-top: 10px;"><strong>✅ Perfetto! Equilibrato:</strong></p>
-                    <table style="margin-top: 10px;">
-                        <tr style="background: rgba(0,212,170,0.2);">
-                            <th>Elemento</th>
-                            <th>Reagenti</th>
-                            <th>Prodotti</th>
-                        </tr>
-                        <tr>
-                            <td><strong>H</strong></td>
-                            <td>4</td>
-                            <td>4 ✅</td>
-                        </tr>
-                        <tr>
-                            <td><strong>O</strong></td>
-                            <td>2</td>
-                            <td>2 ✅</td>
-                        </tr>
-                    </table>
-                </div>
+                <h3>Calcoli Stechiometrici</h3>
+                <p><strong>Problema:</strong> Se bruci 32 grammi di metano (CH₄), quanta acqua (H₂O) si produce?</p>
+                <p><strong>Dati:</strong> Massa molare CH₄ = 16 g/mol, Massa molare H₂O = 18 g/mol</p>
+                <p><strong>Equazione bilanciata:</strong> CH₄ + 2O₂ → CO₂ + 2H₂O</p>
 
-                <div class="interactive-box">
-                    <h3>🎮 Prova Tu ad Equilibrare!</h3>
-                    <p>Equilibra questa reazione: <div class="formula" style="display: inline;">Fe + O₂ → Fe₂O₃</div></p>
-                    <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0; flex-wrap: wrap;">
-                        <input type="number" id="fe-coef" placeholder="Fe" min="1" value="1" style="width: 50px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                        <span>+ O₂ →</span>
-                        <input type="number" id="fe2o3-coef" placeholder="Fe₂O₃" min="1" value="1" style="width: 50px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                    </div>
-                    <button class="btn btn-secondary" onclick="checkBalancing()">Verifica Equilibrio</button>
-                    <div id="balance-feedback" style="margin-top: 15px;"></div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            stoichio_calc: `
-                <h2>🧮 Calcoli Stechiometrici: Da Teoria a Pratica</h2>
-                <p>Ora che sai equilibrare, puoi calcolare quanto prodotto otterrai da una certa quantità di reagenti!</p>
-
-                <h3>Massa Molare: Il Peso di una Molecola</h3>
-                <p>Ogni atomo ha un peso specifico. Sommando i pesi degli atomi in una molecola, ottengo la massa molare.</p>
-                
-                <div class="example">
-                    <div class="example-title">Esempio: Calcolare la Massa Molare dell'Acqua</div>
-                    <p>H₂O = (2 × 1) + (1 × 16) = 2 + 16 = <strong>18 g/mol</strong></p>
-                    <p>Questo significa: 1 mole di acqua pesa 18 grammi</p>
-                </div>
-
-                <h3>La Mole: Un Pacchetto di Particelle</h3>
-                <p>Una mole contiene sempre <strong>6,022 × 10²³ particelle</strong> (numero di Avogadro)</p>
-                <p>È come dire: una dozzina = 12 uova. Una mole è un "pacchetto standard" per contare particelle piccolissime!</p>
-
-                <h3>Calcolo Passo per Passo</h3>
-                <p><strong>Domanda:</strong> Se bruci 32 grammi di metano (CH₄), quanta acqua (H₂O) si produce?</p>
-                <p><strong>Equazione:</strong> CH₄ + 2O₂ → CO₂ + 2H₂O</p>
-
-                <div style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(255, 165, 0, 0.1)); padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid var(--success);">
-                    <strong style="color: var(--success);">✅ Soluzione:</strong>
-                    <ol style="margin-left: 20px; margin-top: 15px;">
-                        <li>Massa molare CH₄ = (1×12) + (4×1) = 16 g/mol</li>
-                        <li>Moli di CH₄ = 32 g ÷ 16 g/mol = <strong>2 moli</strong></li>
-                        <li>Dall'equazione: 1 CH₄ produce 2 H₂O</li>
-                        <li>Quindi: 2 moli CH₄ producono 2 × 2 = <strong>4 moli H₂O</strong></li>
-                        <li>Massa molare H₂O = (2×1) + 16 = 18 g/mol</li>
-                        <li>Massa di H₂O = 4 mol × 18 g/mol = <strong>72 grammi di H₂O</strong> ✨</li>
+                <div class="content-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(32, 201, 151, 0.05));">
+                    <p><strong>Soluzione Passo per Passo:</strong></p>
+                    <ol style="margin-top: 10px;">
+                        <li>Calcola le moli di CH₄: 32 g ÷ 16 g/mol = 2 moli</li>
+                        <li>Usa il rapporto molare: 1 CH₄ produce 2 H₂O</li>
+                        <li>Moli di H₂O: 2 moli × 2 = 4 moli</li>
+                        <li>Converti in grammi: 4 mol × 18 g/mol = 72 grammi di H₂O</li>
                     </ol>
                 </div>
 
                 <div class="interactive-box">
-                    <h3>🧮 Calcolatore Interattivo</h3>
-                    <p>Prova con la reazione: CH₄ + 2O₂ → CO₂ + 2H₂O</p>
-                    <p>Quanta acqua si produce da quanti grammi di metano?</p>
-                    <div style="margin: 15px 0;">
-                        <label style="display: block; margin-bottom: 8px; color: var(--secondary); font-weight: 600;">
-                            Grammi di CH₄
-                        </label>
-                        <input type="number" id="ch4-grams" placeholder="es: 32" min="0" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
-                    </div>
-                    <button class="btn btn-secondary" onclick="calculateWater()">Calcola H₂O Prodotta</button>
-                    <div id="water-result" style="margin-top: 20px;"></div>
+                    <h4>Prova Tu a Calcolare</h4>
+                    <p>Se bruci 64 grammi di metano, quanti grammi di anidride carbonica (CO₂) si producono?</p>
+                    <p style="font-size: 0.9em; color: #64748b;">Massa molare CO₂ = 44 g/mol</p>
+                    <input type="number" id="calc-answer" placeholder="Inserisci la risposta in grammi">
+                    <button class="btn btn-secondary" onclick="verificaCalcolo()">Verifica Risposta</button>
+                    <div id="calc-result" style="margin-top: 15px;"></div>
                 </div>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
+                <button class="btn btn-outline" onclick="showSection('tipi-reazioni')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('esercizi')">Continua con Esercizi →</button>
+            </div>
 
-            exercises: `
-                <h2>🎮 Esercizi Interattivi</h2>
-                <p>Mettiti alla prova con questi esercizi che combinano tutto quello che hai imparato!</p>
+            <!-- SEZIONE: ESERCIZI INTERATTIVI -->
+            <div id="esercizi" class="section">
+                <h2>Esercizi Interattivi</h2>
+
+                <p>Testa le tue conoscenze con i seguenti esercizi. Per ogni domanda, seleziona la risposta corretta e riceverai un feedback immediato.</p>
+
+                <h3>Esercizio 1: Conteggio Atomi</h3>
+                <p>Quanti atomi totali sono presenti nella molecola di glucosio (C₆H₁₂O₆)?</p>
+
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(1, 1, false)">
+                    <input type="radio" name="esercizio1">
+                    <label>6 atomi</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(1, 2, false)">
+                    <input type="radio" name="esercizio1">
+                    <label>12 atomi</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(1, 3, true)">
+                    <input type="radio" name="esercizio1">
+                    <label>24 atomi</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(1, 4, false)">
+                    <input type="radio" name="esercizio1">
+                    <label>30 atomi</label>
+                </div>
+                <div id="risultato-esercizio1" style="margin-top: 15px;"></div>
+
+                <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+                <h3>Esercizio 2: Bilanciamento di Equazioni</h3>
+                <p>Bilancia l'equazione: Fe + O₂ → Fe₂O₃</p>
+                <p>Quali devono essere i coefficienti?</p>
+
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(2, 1, false)">
+                    <input type="radio" name="esercizio2">
+                    <label>2Fe + O₂ → Fe₂O₃</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(2, 2, false)">
+                    <input type="radio" name="esercizio2">
+                    <label>3Fe + 2O₂ → Fe₂O₃</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(2, 3, true)">
+                    <input type="radio" name="esercizio2">
+                    <label>4Fe + 3O₂ → 2Fe₂O₃</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(2, 4, false)">
+                    <input type="radio" name="esercizio2">
+                    <label>6Fe + 4O₂ → 2Fe₂O₃</label>
+                </div>
+                <div id="risultato-esercizio2" style="margin-top: 15px;"></div>
+
+                <hr style="margin: 40px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+                <h3>Esercizio 3: Classificazione di Reazioni</h3>
+                <p>Che tipo di reazione è: 2H₂O → 2H₂ + O₂?</p>
+
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(3, 1, true)">
+                    <input type="radio" name="esercizio3">
+                    <label>Decomposizione</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(3, 2, false)">
+                    <input type="radio" name="esercizio3">
+                    <label>Sintesi</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(3, 3, false)">
+                    <input type="radio" name="esercizio3">
+                    <label>Combustione</label>
+                </div>
+                <div class="quiz-option" onclick="selezionaRispostaEsercizio(3, 4, false)">
+                    <input type="radio" name="esercizio3">
+                    <label>Sostituzione</label>
+                </div>
+                <div id="risultato-esercizio3" style="margin-top: 15px;"></div>
+
+                <button class="btn btn-outline" onclick="showSection('stechiometria')">← Indietro</button>
+                <button class="btn btn-primary" onclick="showSection('simulatore')">Continua con Simulatore →</button>
+            </div>
+
+            <!-- SEZIONE: SIMULATORE -->
+            <div id="simulatore" class="section">
+                <h2>Simulatore Chimico Interattivo</h2>
+
+                <p>Utilizza questo simulatore per creare reazioni chimiche virtuali e osservare i risultati in tempo reale.</p>
 
                 <div class="interactive-box">
-                    <h3>Esercizio 1: Completa la Reazione</h3>
-                    <p>Completa l'equazione equilibrata:</p>
-                    <p><strong>___ Fe + ___ O₂ → ___ Fe₂O₃</strong></p>
-                    <div style="display: flex; gap: 10px; margin: 15px 0;">
-                        <input type="number" id="ex1-fe" placeholder="Fe" min="1" value="1" style="width: 50px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                        <input type="number" id="ex1-o2" placeholder="O₂" min="1" value="1" style="width: 50px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                        <input type="number" id="ex1-fe2o3" placeholder="Fe₂O₃" min="1" value="1" style="width: 50px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                    </div>
-                    <button class="btn btn-secondary" onclick="checkExercise1()">Verifica</button>
-                    <div id="ex1-feedback" style="margin-top: 10px;"></div>
+                    <h4>Crea una Reazione</h4>
+
+                    <p style="margin-bottom: 15px;"><strong>Seleziona i Reagenti:</strong></p>
+
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b;">Reagente 1:</label>
+                    <select id="reagente1">
+                        <option>-- Seleziona --</option>
+                        <option>H₂ (Idrogeno molecolare)</option>
+                        <option>O₂ (Ossigeno molecolare)</option>
+                        <option>CH₄ (Metano)</option>
+                        <option>Fe (Ferro)</option>
+                        <option>C (Carbonio)</option>
+                    </select>
+
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b;">Reagente 2:</label>
+                    <select id="reagente2">
+                        <option>-- Seleziona --</option>
+                        <option>H₂ (Idrogeno molecolare)</option>
+                        <option>O₂ (Ossigeno molecolare)</option>
+                        <option>CH₄ (Metano)</option>
+                        <option>Fe (Ferro)</option>
+                        <option>C (Carbonio)</option>
+                    </select>
+
+                    <button class="btn btn-primary" onclick="eseguiReazione()" style="width: 100%; margin-top: 20px;">⚗️ Esegui Reazione</button>
+
+                    <div id="risultato-reazione" style="margin-top: 30px;"></div>
                 </div>
 
-                <div class="interactive-box">
-                    <h3>Esercizio 2: Calcolo Stechiometrico</h3>
-                    <p>Se hai 64 grammi di O₂, quanti grammi di H₂O si producono?</p>
-                    <p><strong>2H₂ + O₂ → 2H₂O</strong></p>
-                    <p style="font-size: 0.9em; color: #999; margin: 10px 0;">Ricorda: Massa molare O₂ = 32 g/mol, H₂O = 18 g/mol</p>
-                    <input type="number" id="ex2-answer" placeholder="Risposta in grammi" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 8px; margin: 10px 0;">
-                    <button class="btn btn-secondary" onclick="checkExercise2()">Verifica</button>
-                    <div id="ex2-feedback" style="margin-top: 10px;"></div>
-                </div>
+                <h3>Reazioni Preimpostate Rapide</h3>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            simulator: `
-                <h2>🧬 Simulatore Chimico Virtuale</h2>
-                <p>Crea le tue reazioni e osserva cosa accade in tempo reale!</p>
-
-                <div class="interactive-box">
-                    <h3>🔬 Laboratorio Virtuale</h3>
-                    <p>Scegli i reagenti:</p>
-                    <div style="margin: 15px 0;">
-                        <label style="display: block; margin-bottom: 8px; color: var(--secondary); font-weight: 600;">
-                            Reagente 1
-                        </label>
-                        <select id="reagent1" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 8px;">
-                            <option>-- Seleziona --</option>
-                            <option>H₂ (Idrogeno)</option>
-                            <option>O₂ (Ossigeno)</option>
-                            <option>CH₄ (Metano)</option>
-                            <option>Fe (Ferro)</option>
-                        </select>
-                    </div>
-
-                    <div style="margin: 15px 0;">
-                        <label style="display: block; margin-bottom: 8px; color: var(--secondary); font-weight: 600;">
-                            Reagente 2
-                        </label>
-                        <select id="reagent2" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 8px;">
-                            <option>-- Seleziona --</option>
-                            <option>H₂ (Idrogeno)</option>
-                            <option>O₂ (Ossigeno)</option>
-                            <option>CH₄ (Metano)</option>
-                            <option>Fe (Ferro)</option>
-                        </select>
-                    </div>
-
-                    <button class="btn btn-secondary" onclick="runSimulator()">⚗️ Esegui Reazione</button>
-                    <div id="simulator-result" style="margin-top: 20px;"></div>
-                </div>
-
-                <h3>🎯 Reazioni Predefinite Rapide</h3>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0;">
-                    <button class="btn btn-secondary" style="height: 80px;" onclick="quickReaction('water')">
-                        💧 Formazione dell'Acqua<br>
-                        <small>2H₂ + O₂ → 2H₂O</small>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 25px 0;">
+                    <button class="btn btn-secondary" onclick="reazionePredefinita('acqua')" style="height: 60px; font-size: 0.9em;">
+                        💧 Formazione dell'Acqua<br>2H₂ + O₂ → 2H₂O
                     </button>
-                    <button class="btn btn-secondary" style="height: 80px;" onclick="quickReaction('combustion')">
-                        🔥 Combustione del Metano<br>
-                        <small>CH₄ + 2O₂ → CO₂ + 2H₂O</small>
+                    <button class="btn btn-secondary" onclick="reazionePredefinita('metano')" style="height: 60px; font-size: 0.9em;">
+                        🔥 Combustione Metano<br>CH₄ + 2O₂ → CO₂ + 2H₂O
                     </button>
-                    <button class="btn btn-secondary" style="height: 80px;" onclick="quickReaction('oxidation')">
-                        🔴 Ossidazione del Ferro<br>
-                        <small>4Fe + 3O₂ → 2Fe₂O₃</small>
+                    <button class="btn btn-secondary" onclick="reazionePredefinita('carbonio')" style="height: 60px; font-size: 0.9em;">
+                        ⚫ Combustione Carbonio<br>C + O₂ → CO₂
                     </button>
-                    <button class="btn btn-secondary" style="height: 80px;" onclick="quickReaction('explosion')">
-                        💥 Reazione Esplosiva<br>
-                        <small>Osserva le particelle!</small>
+                    <button class="btn btn-secondary" onclick="reazionePredefinita('ferro')" style="height: 60px; font-size: 0.9em;">
+                        🔴 Ossidazione Ferro<br>4Fe + 3O₂ → 2Fe₂O₃
                     </button>
                 </div>
 
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
+                <button class="btn btn-outline" onclick="showSection('esercizi')">← Indietro</button>
+            </div>
+        </div>
+    </div>
 
-            quiz_final: `
-                <h2>📝 Quiz Finale: Mettiti alla Prova!</h2>
-                <p>Sei pronto? Questo quiz copre tutto quello che hai imparato. Buona fortuna! 🍀</p>
+    <script>
+        // Variabili globali
+        let scoreUtente = 0;
+        let risposteCorrette = 0;
 
-                <div class="quiz-container">
-                    <div class="quiz-question">
-                        <h4>Domanda 1: Cosa rappresenta il numero piccolo in H₂O?</h4>
-                        <div class="quiz-option" onclick="answerFinalQuiz(1, 0, true)">
-                            <input type="radio" name="fq1">
-                            <label>Il numero di atomi di quell'elemento</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(1, 1, false)">
-                            <input type="radio" name="fq1">
-                            <label>La temperatura della reazione</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(1, 2, false)">
-                            <input type="radio" name="fq1">
-                            <label>La carica elettrica</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Domanda 2: Quale è l'equazione corretta per equilibrare 2H₂ + O₂ → H₂O?</h4>
-                        <div class="quiz-option" onclick="answerFinalQuiz(2, 0, false)">
-                            <input type="radio" name="fq2">
-                            <label>H₂ + O₂ → H₂O</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(2, 1, true)">
-                            <input type="radio" name="fq2">
-                            <label>2H₂ + O₂ → 2H₂O</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(2, 2, false)">
-                            <input type="radio" name="fq2">
-                            <label>H₂ + 2O₂ → 2H₂O</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Domanda 3: Secondo la Legge di Lavoisier...</h4>
-                        <div class="quiz-option" onclick="answerFinalQuiz(3, 0, false)">
-                            <input type="radio" name="fq3">
-                            <label>La massa aumenta durante una reazione</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(3, 1, true)">
-                            <input type="radio" name="fq3">
-                            <label>La massa dei reagenti = massa dei prodotti</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(3, 2, false)">
-                            <input type="radio" name="fq3">
-                            <label>La massa scompare</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Domanda 4: Se 16g di CH₄ producono 36g di H₂O, quanti grammi di CH₄ producono 72g di H₂O?</h4>
-                        <div class="quiz-option" onclick="answerFinalQuiz(4, 0, true)">
-                            <input type="radio" name="fq4">
-                            <label>32 grammi</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(4, 1, false)">
-                            <input type="radio" name="fq4">
-                            <label>64 grammi</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(4, 2, false)">
-                            <input type="radio" name="fq4">
-                            <label>8 grammi</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>Domanda 5: Quale tipo di reazione è: 2H₂O → 2H₂ + O₂?</h4>
-                        <div class="quiz-option" onclick="answerFinalQuiz(5, 0, false)">
-                            <input type="radio" name="fq5">
-                            <label>Sintesi</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(5, 1, true)">
-                            <input type="radio" name="fq5">
-                            <label>Decomposizione</label>
-                        </div>
-                        <div class="quiz-option" onclick="answerFinalQuiz(5, 2, false)">
-                            <input type="radio" name="fq5">
-                            <label>Combustione</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="submitFinalQuiz()">Invia Risposte</button>
-                </div>
-            `,
-
-            advanced_lab: `
-                <h2>🏆 Laboratorio Avanzato: Sfide Complesse</h2>
-                <p>Sei arrivato fin qui! Ora affrontiamosfide più complesse per diventare un vero esperto di chimica.</p>
-
-                <div class="interactive-box">
-                    <h3>Sfida 1: Reazione a Più Stadi</h3>
-                    <p>Equilibra questa reazione complessa:</p>
-                    <div class="formula">C₆H₁₂O₆ + O₂ → CO₂ + H₂O</div>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #999;">Suggerimento: Inizia da C e H, poi fai O per ultimo</p>
-                    <div style="display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap;">
-                        <input type="number" id="adv1-c6" placeholder="C₆H₁₂O₆" min="1" value="1" style="width: 80px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                        <input type="number" id="adv1-o2" placeholder="O₂" min="1" value="1" style="width: 60px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                        <input type="number" id="adv1-co2" placeholder="CO₂" min="1" value="1" style="width: 60px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                        <input type="number" id="adv1-h2o" placeholder="H₂O" min="1" value="1" style="width: 60px; padding: 8px; border: 2px solid #667eea; border-radius: 5px;">
-                    </div>
-                    <button class="btn btn-secondary" onclick="checkAdvanced1()">Verifica</button>
-                    <div id="adv1-feedback" style="margin-top: 10px;"></div>
-                </div>
-
-                <div class="interactive-box">
-                    <h3>Sfida 2: Calcolo Multi-step</h3>
-                    <p>Un laboratorio produce 500 grammi di CO₂ dalla combustione del metano.</p>
-                    <p>Quanti grammi di metano (CH₄) sono stati bruciati?</p>
-                    <p style="margin-top: 10px; font-size: 0.9em;"><strong>Dati utili:</strong> Massa molare CH₄ = 16, CO₂ = 44</p>
-                    <p style="font-size: 0.9em;">Equazione: CH₄ + 2O₂ → CO₂ + 2H₂O</p>
-                    <input type="number" id="adv2-answer" placeholder="Risposta in grammi" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 8px; margin: 10px 0;">
-                    <button class="btn btn-secondary" onclick="checkAdvanced2()">Verifica</button>
-                    <div id="adv2-feedback" style="margin-top: 10px;"></div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            real_world: `
-                <h2>💎 La Chimica nel Mondo Reale</h2>
-                <p>La chimica non è solo teoria! Scopri come le reazioni chimiche influenzano la tua vita quotidiana:</p>
-
-                <div class="example">
-                    <div class="example-title">🍳 Cucina: La Cottura degli Alimenti</div>
-                    <p>Quando cucini, le proteine cambiano struttura per il calore (denaturazione proteica). Questo è una reazione chimica che rende il cibo digeribile.</p>
-                </div>
-
-                <div class="example">
-                    <div class="example-title">🌱 Agricoltura: La Fotosintesi</div>
-                    <p>Le piante usano la luce solare per trasformare CO₂ e acqua in glucosio e ossigeno:</p>
-                    <div class="formula">6CO₂ + 6H₂O + Luce → C₆H₁₂O₆ + 6O₂</div>
-                    <p>Questo processo alimenta la catena alimentare del pianeta!</p>
-                </div>
-
-                <div class="example">
-                    <div class="example-title">🔋 Batterie: Energia Chimica</div>
-                    <p>Le batterie mantengono l'energia attraverso reazioni chimiche controllate che producono corrente elettrica. Senza chimica, non avremmo smartphone!</p>
-                </div>
-
-                <div class="example">
-                    <div class="example-title">💊 Medicina: I Farmaci</div>
-                    <p>I farmaci funzionano perché le loro molecole reagiscono specificamente con le cellule malate del nostro corpo, guarendoci.</p>
-                </div>
-
-                <div class="example">
-                    <div class="example-title">🚗 Automobili: Combustibili</div>
-                    <p>Il motore di un'auto brucia benzina (idrocarburi) in ossigeno, liberando energia che muove il veicolo:</p>
-                    <div class="formula">C₈H₁₈ + 12.5O₂ → 8CO₂ + 9H₂O + Energia</div>
-                </div>
-
-                <div class="example">
-                    <div class="example-title">🧴 Cosmetica: Reazioni di Bellezza</div>
-                    <p>Shampoo, creme e trucco funzionano attraverso reazioni chimiche che puliscono, idratano o colorano la pelle.</p>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn" onclick="previousStage()">← Indietro</button>
-                    <button class="btn btn-primary" onclick="nextStage()">Continua →</button>
-                </div>
-            `,
-
-            certificate: `
-                <div style="text-align: center; padding: 40px;">
-                    <h1 style="color: var(--primary); font-size: 3em; margin-bottom: 20px;">🎓 Complimenti!</h1>
-                    
-                    <div style="background: linear-gradient(135deg, #ffd700, #ffed4e); padding: 40px; border-radius: 15px; margin: 30px 0; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-                        <h2 style="color: #333; margin-bottom: 20px;">CERTIFICATO DI COMPLETAMENTO</h2>
-                        <p style="font-size: 1.2em; color: #555; margin-bottom: 20px;">
-                            Sei ufficialmente un <strong>ESPERTO DI CHIMICA!</strong>
-                        </p>
-                        <p style="color: #666; margin-bottom: 30px;">
-                            Hai completato il viaggio educativo attraverso i fondamenti della chimica, <br>
-                            dalle particelle atomiche alla stechiometria, con successo!
-                        </p>
-                    </div>
-
-                    <div style="background: rgba(102,126,234,0.1); padding: 30px; border-radius: 15px; margin: 20px 0;">
-                        <h3 style="color: var(--primary); margin-bottom: 20px;">📊 I Tuoi Risultati</h3>
-                        <table style="width: 100%; max-width: 400px; margin: 0 auto;">
-                            <tr style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
-                                <th style="padding: 12px; text-align: left;">Metrica</th>
-                                <th style="padding: 12px; text-align: right;">Risultato</th>
-                            </tr>
-                            <tr style="background: var(--light);">
-                                <td style="padding: 12px;">Tappe Completate</td>
-                                <td style="padding: 12px; text-align: right;"><strong>15/15</strong></td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 12px;">Tempo Impiegato</td>
-                                <td style="padding: 12px; text-align: right;" id="cert-time">--</td>
-                            </tr>
-                            <tr style="background: var(--light);">
-                                <td style="padding: 12px;">Quiz Passati</td>
-                                <td style="padding: 12px; text-align: right;"><strong>3/3</strong></td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div style="margin-top: 40px;">
-                        <h3 style="color: var(--secondary); margin-bottom: 20px;">✅ Competenze Acquisite</h3>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 500px; margin: 0 auto;">
-                            <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px;">
-                                <strong>⚛️ Atomi & Molecole</strong>
-                            </div>
-                            <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px;">
-                                <strong>⚡ Reazioni Chimiche</strong>
-                            </div>
-                            <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px;">
-                                <strong>⚖️ Stechiometria</strong>
-                            </div>
-                            <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px;">
-                                <strong>🧮 Calcoli Chimici</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p style="color: #999; margin-top: 40px;">
-                        Scarica il tuo certificato, condividilo e continua a imparare! 🚀
-                    </p>
-                </div>
-            `
-        };
-
-        // ==================== RENDERIZZAZIONE ====================
-
-        function renderTimeline() {
-            const timeline = document.getElementById('timeline-container');
-            timeline.innerHTML = '';
-
-            course.forEach(stage => {
-                const isUnlocked = stage.prerequisites.length === 0 || 
-                                 stage.prerequisites.every(p => userState.completedStages.includes(p));
-                const isCompleted = userState.completedStages.includes(stage.id);
-                const isActive = userState.currentStage === stage.id;
-
-                const item = document.createElement('div');
-                item.className = `timeline-item ${!isUnlocked ? 'locked' : ''} ${isActive ? 'active' : ''}`;
-                item.innerHTML = `
-                    <h3>${stage.icon} ${stage.title}</h3>
-                    <p>${stage.subtitle}</p>
-                    <p style="font-size: 0.8em; margin-top: 5px; opacity: 0.6;">${isCompleted ? '✅ Completato' : stage.duration}</p>
-                `;
-                item.onclick = () => !isUnlocked || goToStage(stage.id);
-                timeline.appendChild(item);
+        // Funzione per mostrare una sezione
+        function showSection(sectionId) {
+            // Nascondi tutte le sezioni
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
             });
 
-            updateProgress();
-        }
-
-        function renderContent() {
-            const stage = course.find(s => s.id === userState.currentStage);
-            const container = document.getElementById('content-container');
-
-            let html = `
-                <div class="stage-header">
-                    <div class="stage-number">${stage.id}</div>
-                    <h1>${stage.title}</h1>
-                    <p>${stage.subtitle}</p>
-                </div>
-                <div class="content-card">
-                    ${contents[stage.content] || '<p>Contenuto non disponibile</p>'}
-                </div>
-            `;
-
-            container.innerHTML = html;
-        }
-
-        function updateProgress() {
-            const completed = userState.completedStages.length;
-            const percentage = (completed / course.length) * 100;
-            document.getElementById('progress-fill').style.width = percentage + '%';
-            document.getElementById('progress-text').textContent = Math.floor(percentage) + '% Completato';
-        }
-
-        function goToStage(stageId) {
-            userState.currentStage = stageId;
-            renderContent();
-            renderTimeline();
-            document.querySelector('.main-content').scrollTop = 0;
-        }
-
-        function nextStage() {
-            if (!userState.completedStages.includes(userState.currentStage)) {
-                userState.completedStages.push(userState.currentStage);
+            // Mostra la sezione selezionata
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
             }
 
-            const nextId = userState.currentStage + 1;
-            if (nextId <= course.length) {
-                goToStage(nextId);
-                showAchievement(`🎯 Tappa ${nextId} Sbloccata!`, `Stai progredendo meravigliosamente!`);
+            // Aggiorna le nav card
+            const navCards = document.querySelectorAll('.nav-card');
+            navCards.forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Aggiungi la classe active alla nav card corrispondente
+            const navCard = Array.from(navCards).find(card => {
+                return card.onclick.toString().includes(sectionId);
+            });
+            if (navCard) {
+                navCard.classList.add('active');
             }
+
+            // Scrolla verso l'alto
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function previousStage() {
-            const prevId = userState.currentStage - 1;
-            if (prevId >= 1) {
-                goToStage(prevId);
-            }
-        }
+        // Verifica calcolo stechiometrico
+        function verificaCalcolo() {
+            const answer = parseFloat(document.getElementById('calc-answer').value);
+            const correctAnswer = 128; // 64g CH₄ → 128g CO₂
+            const resultDiv = document.getElementById('calc-result');
 
-        function showAchievement(title, message) {
-            const popup = document.createElement('div');
-            popup.className = 'achievement-popup';
-            popup.innerHTML = `
-                <div class="achievement-icon">🏆</div>
-                <h3>${title}</h3>
-                <p>${message}</p>
-            `;
-            document.body.appendChild(popup);
-
-            setTimeout(() => {
-                popup.style.animation = 'slideDown 0.5s ease-out reverse forwards';
-                setTimeout(() => document.body.removeChild(popup), 500);
-            }, 3000);
-        }
-
-        // ==================== FUNZIONI INTERATTIVE ====================
-
-        function atomInfo(symbol, name) {
-            const info = {
-                'H': 'L\'Idrogeno è l\'elemento più leggero. Si trova in acqua, combustibili e tutte le creature viventi!',
-                'O': 'L\'Ossigeno è essenziale per la respirazione. È il 21% dell\'aria che respiri!',
-                'C': 'Il Carbonio è la base di tutta la chimica organica e della vita!',
-                'N': 'L\'Azoto è il 78% dell\'atmosfera. È cruciale per le proteine!'
-            };
-
-            showModal(`<h2>${symbol} - ${name}</h2><p>${info[symbol]}</p>`);
-        }
-
-        function startExperiment(type) {
-            const result = document.getElementById('experiment-result');
-            result.innerHTML = `
-                <div style="padding: 20px; background: rgba(240,147,251,0.2); border-radius: 10px; margin-top: 15px;">
-                    <h4 style="color: var(--success);">⚗️ Reazione in Corso...</h4>
-                    <div style="animation: pulse 1s infinite;">
-                        <p>💨💨💨</p>
-                        <p style="font-size: 0.9em;">Si formano bolle di gas!</p>
-                    </div>
-                    <p style="margin-top: 15px; color: #666;">
-                        CH₃COOH + NaHCO₃ → CH₃COONa + H₂O + CO₂↑
-                    </p>
-                    <p style="color: var(--success); font-weight: 600;">✅ Reazione completata!</p>
-                </div>
-            `;
-        }
-
-        function checkBalancing() {
-            const fe = parseInt(document.getElementById('fe-coef').value) || 0;
-            const fe2o3 = parseInt(document.getElementById('fe2o3-coef').value) || 0;
-            const feedback = document.getElementById('balance-feedback');
-
-            // 4Fe + 3O₂ → 2Fe₂O₃
-            if (fe === 4 && fe2o3 === 2) {
-                feedback.innerHTML = `
-                    <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px; border-left: 5px solid var(--success);">
-                        <h4 style="color: var(--success);">✅ Corretto!</h4>
-                        <p>4Fe + 3O₂ → 2Fe₂O₃ è equilibrato!</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">
-                            Atomi di Fe: 4 (sinistra) = 4 (destra) ✓<br>
-                            Atomi di O: 6 (sinistra) = 6 (destra) ✓
-                        </p>
+            if (Math.abs(answer - correctAnswer) < 1) {
+                resultDiv.innerHTML = `
+                    <div style="padding: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(32, 201, 151, 0.05)); border-radius: 10px; border-left: 5px solid var(--success);">
+                        <p style="color: var(--success); font-weight: 600; margin: 0;">✓ Risposta Corretta!</p>
+                        <p style="color: #475569; margin-top: 10px;">Hai calcolato correttamente: 128 grammi di CO₂</p>
                     </div>
                 `;
-                userState.score++;
+                scoreUtente += 10;
             } else {
-                feedback.innerHTML = `
-                    <div style="padding: 15px; background: rgba(255,107,107,0.2); border-radius: 10px; border-left: 5px solid var(--danger);">
-                        <h4 style="color: var(--danger);">❌ Non Corretto</h4>
-                        <p>Suggerimento: Prova con 4 davanti a Fe e 2 davanti a Fe₂O₃</p>
+                resultDiv.innerHTML = `
+                    <div style="padding: 20px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(248, 113, 113, 0.05)); border-radius: 10px; border-left: 5px solid var(--danger);">
+                        <p style="color: var(--danger); font-weight: 600; margin: 0;">✗ Risposta Errata</p>
+                        <p style="color: #475569; margin-top: 10px;">La risposta corretta è 128 grammi. Riprova!</p>
                     </div>
                 `;
             }
         }
 
-        function calculateWater() {
-            const grams = parseFloat(document.getElementById('ch4-grams').value);
-            const result = document.getElementById('water-result');
+        // Selezione risposta esercizio
+        function selezionaRispostaEsercizio(numeroEsercizio, numeroOpcione, corretto) {
+            const resultDiv = document.getElementById(`risultato-esercizio${numeroEsercizio}`);
 
-            if (!grams || grams <= 0) {
-                result.innerHTML = `<div style="color: var(--danger);">Inserisci un valore valido</div>`;
+            if (corretto) {
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(32, 201, 151, 0.05)); border-radius: 10px; border-left: 5px solid var(--success);">
+                        <p style="color: var(--success); font-weight: 600; margin: 0;">✓ Risposta Corretta!</p>
+                    </div>
+                `;
+                risposteCorrette++;
+                scoreUtente += 5;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(248, 113, 113, 0.05)); border-radius: 10px; border-left: 5px solid var(--danger);">
+                        <p style="color: var(--danger); font-weight: 600; margin: 0;">✗ Risposta Errata</p>
+                        <p style="color: #475569; margin-top: 10px;">Riprova con maggiore attenzione</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Esecuzione reazione simulatore
+        function eseguiReazione() {
+            const reagente1 = document.getElementById('reagente1').value;
+            const reagente2 = document.getElementById('reagente2').value;
+            const resultDiv = document.getElementById('risultato-reazione');
+
+            if (reagente1 === '-- Seleziona --' || reagente2 === '-- Seleziona --') {
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), transparent); border-radius: 10px; border-left: 5px solid var(--danger);">
+                        <p style="color: var(--danger); font-weight: 600;">Seleziona entrambi i reagenti</p>
+                    </div>
+                `;
                 return;
             }
 
-            const moleCH4 = grams / 16;
-            const moleH2O = moleCH4 * 2;
-            const gramsH2O = moleH2O * 18;
-
-            result.innerHTML = `
-                <div style="padding: 20px; background: rgba(0,212,170,0.15); border-radius: 10px; border-left: 5px solid var(--success);">
-                    <h4 style="color: var(--success);">✅ Calcolo Corretto!</h4>
-                    <p><strong>Procedimento:</strong></p>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li>${grams}g ÷ 16g/mol = ${moleCH4.toFixed(3)} mol CH₄</li>
-                        <li>Rapporto 1:2 → ${moleCH4.toFixed(3)} × 2 = ${moleH2O.toFixed(3)} mol H₂O</li>
-                        <li>${moleH2O.toFixed(3)} mol × 18g/mol = <strong style="color: var(--success);">${gramsH2O.toFixed(2)}g di H₂O</strong></li>
-                    </ol>
-                </div>
-            `;
-            userState.score++;
-        }
-
-        function checkReactionType(answer, correct) {
-            const feedback = document.getElementById('reaction-feedback');
-            if (correct) {
-                feedback.innerHTML = `
-                    <div style="padding: 15px; background: rgba(0,212,170,0.2); border-radius: 10px; margin-top: 15px; border-left: 5px solid var(--success);">
-                        <p style="color: var(--success); font-weight: 600;">✅ Corretto! È una reazione di Decomposizione!</p>
-                    </div>
-                `;
-                userState.score++;
-            } else {
-                feedback.innerHTML = `
-                    <div style="padding: 15px; background: rgba(255,107,107,0.2); border-radius: 10px; margin-top: 15px; border-left: 5px solid var(--danger);">
-                        <p style="color: var(--danger); font-weight: 600;">❌ Non corretto. Prova ancora!</p>
-                    </div>
-                `;
-            }
-        }
-
-        let quizScore = 0;
-        let quizCount = 0;
-
-        function answerQuiz(questionNum, optionNum, correct) {
-            quizCount++;
-            if (correct) quizScore++;
-            
-            const options = document.querySelectorAll(`input[name="q${questionNum}"]`).parentElement;
-            if (correct) {
-                event.target.parentElement.style.background = 'rgba(0,212,170,0.2)';
-                event.target.parentElement.style.borderColor = 'var(--success)';
-            } else {
-                event.target.parentElement.style.background = 'rgba(255,107,107,0.2)';
-                event.target.parentElement.style.borderColor = 'var(--danger)';
-            }
-
-            if (quizCount === 3) {
-                setTimeout(() => {
-                    showAchievement(`Quiz Completato!`, `Hai ottenuto ${quizScore}/3 risposte corrette!`);
-                }, 500);
-            }
-        }
-
-        function answerFinalQuiz(questionNum, optionNum, correct) {
-            if (correct) {
-                event.target.parentElement.style.background = 'rgba(0,212,170,0.2)';
-                event.target.parentElement.style.borderColor = 'var(--success)';
-                userState.score += 10;
-            } else {
-                event.target.parentElement.style.background = 'rgba(255,107,107,0.2)';
-                event.target.parentElement.style.borderColor = 'var(--danger)';
-            }
-        }
-
-        function submitFinalQuiz() {
-            showAchievement('🎓 Quiz Finale Completato!', 'Sei pronto per il certificato!');
-            nextStage();
-        }
-
-        function checkExercise1() {
-            const fe = parseInt(document.getElementById('ex1-fe').value);
-            const o2 = parseInt(document.getElementById('ex1-o2').value);
-            const fe2o3 = parseInt(document.getElementById('ex1-fe2o3').value);
-
-            const feedback = document.getElementById('ex1-feedback');
-            // 4Fe + 3O₂ → 2Fe₂O₃
-            if (fe === 4 && o2 === 3 && fe2o3 === 2) {
-                feedback.innerHTML = `<div style="color: var(--success); font-weight: 600;">✅ Perfetto!</div>`;
-                userState.score += 5;
-            } else {
-                feedback.innerHTML = `<div style="color: var(--danger);">❌ Riprova: 4Fe + 3O₂ → 2Fe₂O₃</div>`;
-            }
-        }
-
-        function checkExercise2() {
-            const answer = parseFloat(document.getElementById('ex2-answer').value);
-            const correct = 72; // 64g O₂ × (36 H₂O / 32 O₂) = 72g
-            const feedback = document.getElementById('ex2-feedback');
-
-            if (Math.abs(answer - correct) < 1) {
-                feedback.innerHTML = `<div style="color: var(--success); font-weight: 600;">✅ Giusto! 72 grammi!</div>`;
-                userState.score += 5;
-            } else {
-                feedback.innerHTML = `<div style="color: var(--danger);">❌ No, la risposta è 72g. Riprovaci!</div>`;
-            }
-        }
-
-        function checkAdvanced1() {
-            // C₆H₁₂O₆ + O₂ → CO₂ + H₂O => 1C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O
-            const c6 = parseInt(document.getElementById('adv1-c6').value);
-            const o2 = parseInt(document.getElementById('adv1-o2').value);
-            const co2 = parseInt(document.getElementById('adv1-co2').value);
-            const h2o = parseInt(document.getElementById('adv1-h2o').value);
-
-            const feedback = document.getElementById('adv1-feedback');
-            if (c6 === 1 && o2 === 6 && co2 === 6 && h2o === 6) {
-                feedback.innerHTML = `<div style="color: var(--success); font-weight: 600;">✅ Eccezionale! Complimenti!</div>`;
-                userState.score += 10;
-            } else {
-                feedback.innerHTML = `<div style="color: var(--danger);">❌ La risposta è: 1C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O</div>`;
-            }
-        }
-
-        function checkAdvanced2() {
-            const answer = parseFloat(document.getElementById('adv2-answer').value);
-            const correct = 181.82; // 500g CO₂ × (16 CH₄ / 44 CO₂)
-            const feedback = document.getElementById('adv2-feedback');
-
-            if (Math.abs(answer - correct) < 5) {
-                feedback.innerHTML = `<div style="color: var(--success); font-weight: 600;">✅ Corretto! Circa 182 grammi!</div>`;
-                userState.score += 10;
-            } else {
-                feedback.innerHTML = `<div style="color: var(--danger);">❌ La risposta è circa 182g. Riprova!</div>`;
-            }
-        }
-
-        function runSimulator() {
-            const r1 = document.getElementById('reagent1').value;
-            const r2 = document.getElementById('reagent2').value;
-
-            if (!r1 || !r2 || r1 === '-- Seleziona --' || r2 === '-- Seleziona --') {
-                alert('Seleziona entrambi i reagenti!');
-                return;
-            }
-
-            const result = document.getElementById('simulator-result');
-            result.innerHTML = `
-                <div style="padding: 20px; background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(240,147,251,0.15)); border-radius: 10px;">
-                    <h4 style="color: var(--secondary);">⚗️ Reazione in corso...</h4>
-                    <p style="margin: 15px 0; font-size: 1.2em;">
-                        ${r1} + ${r2} 
-                    </p>
-                    <div style="animation: pulse 1s infinite; text-align: center; font-size: 2em;">
-                        ⚡ → 💫
-                    </div>
-                    <p style="margin-top: 15px; color: var(--success); font-weight: 600;">
-                        ✨ Reazione completata! Nuove sostanze create!
-                    </p>
-                </div>
-            `;
-        }
-
-        function quickReaction(type) {
-            const reactions = {
-                'water': '2H₂ + O₂ → 2H₂O (Formazione dell\'Acqua)',
-                'combustion': 'CH₄ + 2O₂ → CO₂ + 2H₂O (Combustione)',
-                'oxidation': '4Fe + 3O₂ → 2Fe₂O₃ (Ossidazione)',
-                'explosion': '💥 Reazione Esplosiva!'
+            const reazioni = {
+                'H₂O₂': {
+                    equazione: '2H₂ + O₂ → 2H₂O',
+                    descrizione: 'Formazione dell\'acqua',
+                    prodotti: 'Acqua (H₂O)',
+                    energia: 'Esotermica (rilascia energia)'
+                },
+                'CH₄O₂': {
+                    equazione: 'CH₄ + 2O₂ → CO₂ + 2H₂O',
+                    descrizione: 'Combustione del metano',
+                    prodotti: 'Anidride carbonica e acqua',
+                    energia: 'Esotermica (rilascia molta energia)'
+                }
             };
 
-            const result = document.getElementById('simulator-result');
-            result.innerHTML = `
-                <div style="padding: 20px; background: rgba(0,212,170,0.2); border-radius: 10px; text-align: center;">
-                    <h4 style="color: var(--success);">${reactions[type]}</h4>
-                    <div style="margin: 20px 0; font-size: 3em; animation: float 3s ease-in-out infinite;">
-                        ${type === 'water' ? '💧' : type === 'combustion' ? '🔥' : type === 'oxidation' ? '🔴' : '💥'}
+            const key = (reagente1.includes('H₂') && reagente2.includes('O₂')) ? 'H₂O₂' : 
+                        (reagente1.includes('CH₄') && reagente2.includes('O₂')) ? 'CH₄O₂' : null;
+
+            if (key && reazioni[key]) {
+                const reazione = reazioni[key];
+                resultDiv.innerHTML = `
+                    <div style="padding: 25px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05)); border-radius: 15px; border-left: 5px solid var(--primary);">
+                        <h4 style="color: var(--secondary); margin-bottom: 15px;">⚗️ ${reazione.descrizione}</h4>
+                        <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #e0e7ff; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <p style="margin: 0; font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 1px;">${reazione.equazione}</p>
+                        </div>
+                        <p><strong>Prodotti:</strong> ${reazione.prodotti}</p>
+                        <p><strong>Tipo:</strong> ${reazione.energia}</p>
                     </div>
-                    <p style="color: #666; margin-top: 15px;">Reazione simulata con successo!</p>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), transparent); border-radius: 10px; border-left: 5px solid var(--warning);">
+                        <p style="color: #b45309; font-weight: 600;">Combinazione non disponibile. Prova altre opzioni.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Reazioni predefinite
+        function reazionePredefinita(tipo) {
+            const reazioni = {
+                'acqua': {
+                    equazione: '2H₂ + O₂ → 2H₂O',
+                    descrizione: 'Formazione dell\'acqua',
+                    prodotti: 'Acqua (H₂O)',
+                    energia: 'Esotermica'
+                },
+                'metano': {
+                    equazione: 'CH₄ + 2O₂ → CO₂ + 2H₂O',
+                    descrizione: 'Combustione del metano',
+                    prodotti: 'Anidride carbonica e acqua',
+                    energia: 'Esotermica'
+                },
+                'carbonio': {
+                    equazione: '2C + O₂ → 2CO',
+                    descrizione: 'Combustione del carbonio (ossigeno limitato)',
+                    prodotti: 'Monossido di carbonio',
+                    energia: 'Esotermica'
+                },
+                'ferro': {
+                    equazione: '4Fe + 3O₂ → 2Fe₂O₃',
+                    descrizione: 'Ossidazione del ferro (ruggine)',
+                    prodotti: 'Ossido di ferro (III)',
+                    energia: 'Esotermica'
+                }
+            };
+
+            const reazione = reazioni[tipo];
+            const resultDiv = document.getElementById('risultato-reazione');
+
+            resultDiv.innerHTML = `
+                <div style="padding: 25px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.05)); border-radius: 15px; border-left: 5px solid var(--success);">
+                    <h4 style="color: var(--success); margin-bottom: 15px;">⚗️ ${reazione.descrizione}</h4>
+                    <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #e0e7ff; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="margin: 0; font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 1px; text-align: center;">${reazione.equazione}</p>
+                    </div>
+                    <p><strong>Prodotti Formati:</strong> ${reazione.prodotti}</p>
+                    <p><strong>Caratteristica:</strong> ${reazione.energia}</p>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(99, 102, 241, 0.1); border-radius: 8px;">
+                        <p style="margin: 0; color: var(--primary); font-size: 0.9em;">Questa è una simulazione accurata di una reazione chimica reale.</p>
+                    </div>
                 </div>
             `;
         }
-
-        function showModal(content) {
-            const modal = document.getElementById('modal');
-            const body = document.getElementById('modal-body');
-            body.innerHTML = content;
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-        }
-
-        document.getElementById('modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('modal')) {
-                closeModal();
-            }
-        });
-
-        // ==================== INIT ====================
-
-        setTimeout(() => {
-            renderTimeline();
-            renderContent();
-
-            // Aggiorna il tempo nel certificato
-            setInterval(() => {
-                const timeMs = Date.now() - userState.startTime;
-                const minutes = Math.floor(timeMs / 60000);
-                const seconds = Math.floor((timeMs % 60000) / 1000);
-                const timeStr = `${minutes}m ${seconds}s`;
-                const certTime = document.getElementById('cert-time');
-                if (certTime) certTime.textContent = timeStr;
-            }, 1000);
-        }, 2000);
     </script>
 </body>
 </html>
