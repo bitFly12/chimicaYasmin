@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Learning Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Chemistry Learning: Reactions and Stoichiometry</h1>
+        <nav>
+            <ul>
+                <li><a href="#reactions">Chemical Reactions</a></li>
+                <li><a href="#stoichiometry">Stoichiometry</a></li>
+                <li><a href="#quizzes">Quizzes</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="reactions">
+            <h2>Chemical Reactions</h2>
+            <p>Chemical reactions are processes that transform reactants into products.</p>
+            <h3>Types of Reactions:</h3>
+            <ul>
+                <li>Synthesis</li>
+                <li>Decomposition</li>
+                <li>Single Replacement</li>
+                <li>Double Replacement</li>
+                <li>Combustion</li>
+            </ul>
+            <button onclick="showMoreInfo('reactions')">Learn More</button>
+            <div id="moreReactions" style="display:none;">
+                <p>In synthesis reactions, two or more substances combine to form a new compound...</p>
+                <!-- More detailed information about reactions... -->
+            </div>
+        </section>
+        <section id="stoichiometry">
+            <h2>Stoichiometry</h2>
+            <p>Stoichiometry allows us to calculate the amounts of reactants and products in chemical reactions.</p>
+            <button onclick="showMoreInfo('stoichiometry')">Learn More</button>
+            <div id="moreStoichiometry" style="display:none;">
+                <p>Using balanced equations, we can determine how much of each reactant is needed...</p>
+                <!-- More detailed information about stoichiometry... -->
+            </div>
+        </section>
+        <section id="quizzes">
+            <h2>Interactive Quizzes</h2>
+            <p>Test your knowledge with our interactive quizzes!</p>
+            <button onclick="startQuiz()">Start Quiz</button>
+            <div id="quizContainer" style="display:none;">
+                <p>Question: What is the product of H<sub>2</sub> + O?<br/>
+                <input type="text" id="quizAnswer" />
+                <button onclick="checkAnswer()">Submit</button></p>
+                <p id="quizResult"></p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2026 Chemistry Learning Platform</p>
+    </footer>
+    <script src="scripts.js"></script>
+    <script>
+        function showMoreInfo(section) {
+            var moreInfo = document.getElementById('more' + section.charAt(0).toUpperCase() + section.slice(1));
+            moreInfo.style.display = moreInfo.style.display === 'none' ? 'block' : 'none';
+        }
+        function startQuiz() {
+            document.getElementById('quizContainer').style.display = 'block';
+        }
+        function checkAnswer() {
+            var answer = document.getElementById('quizAnswer').value;
+            var result = document.getElementById('quizResult');
+            if(answer.toLowerCase() === 'water') {
+                result.innerHTML = 'Correct!';
+            } else {
+                result.innerHTML = 'Try again!';
+            }
+        }
+    </script>
+</body>
+</html>
